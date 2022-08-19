@@ -10,4 +10,11 @@ export default defineNuxtConfig({
       postcssOptions: require("./postcss.config.js"),
     },
   },
+  script: [
+    {
+      "data-ad-client":"ca-pub-9456709395715105",
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js',
+      async:true,
+    }
+  ],
 });
