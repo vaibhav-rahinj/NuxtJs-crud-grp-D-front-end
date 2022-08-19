@@ -1,3 +1,3 @@
 <template>
-<h1>Hello</h1>
-</template>
+  <NuxtLink to="/student" >go to student</NuxtLink>
+  </template>
