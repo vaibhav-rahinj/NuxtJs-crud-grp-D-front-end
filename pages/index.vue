@@ -7,6 +7,8 @@
       <NuxtLink to="/book">Book Management</NuxtLink>
     </button>
     <hr />
+
   </div>
   <div><NuxtLink to="/student">go to student</NuxtLink></div>
 </template>
+
