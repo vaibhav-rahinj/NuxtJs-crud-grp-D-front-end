@@ -1,4 +1,5 @@
 <template>
+
   <div>
     <h1 class="text-3xl text-blue-700 bg-slate-400">
       Nuxt integration with nestjs
@@ -7,6 +8,7 @@
       <NuxtLink to="/book">Book Management</NuxtLink>
     </button>
     <hr />
-    <!-- <h1 id="status">Connected</h1> -->
+     <NuxtLink to="/student" >go to student</NuxtLink>
   </div>
 </template>
+
