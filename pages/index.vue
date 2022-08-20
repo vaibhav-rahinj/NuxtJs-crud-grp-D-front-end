@@ -7,6 +7,6 @@
       <NuxtLink to="/book">Book Management</NuxtLink>
     </button>
     <hr />
-    <!-- <h1 id="status">Connected</h1> -->
   </div>
+  <div><NuxtLink to="/student">go to student</NuxtLink></div>
 </template>
