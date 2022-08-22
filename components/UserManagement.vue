@@ -95,11 +95,7 @@
             <tr>
               <td><label>User Profile :</label></td>
               <td>
-                <input
-                  type="file"
-                  
-                  class="sm:w-52 py-2 ml-2 mb-2"
-                />
+                <input type="file" class="sm:w-52 py-2 ml-2 mb-2" />
               </td>
             </tr>
             <tr>
@@ -166,6 +162,8 @@
             </td>
             <td class="sm:py-3 px-6">{{ row.Role }}</td>
             <td class="sm:py-3 px-6">{{ row.Gender }}</td>
+            <!-- <td class="sm:py-3 px-6">{{ row.Mobile }}</td> -->
+            <!-- <td class="sm:py-3 px-6">{{ row.Address }}</td> -->
             <td class="sm:py-3 px-6">{{ row.State }}</td>
             <td class="sm:py-3 px-6">{{ row.Country }}</td>
             <td class="sm:py-3 px-6">{{ row.Profile }}</td>
@@ -231,8 +229,8 @@ export default {
     addUserTodata(e) {
       e.preventDefault();
       this.checkemail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-      this.checkmobile =
-        /^[+][(]?[0-9]{1,3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,7}$/gm;
+      // this.checkmobile =
+      //   /^[+][(]?[0-9]{1,3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,7}$/gm;
 
       if (this.isEdit === true) {
         this.dataarray[this.edtIndex] = this.newUser;
@@ -320,7 +318,7 @@ export default {
         // Address: '',
         State: "",
         Country: "",
-        Profile:''
+        Profile: "",
       }),
         (updatebtn = document.getElementById("btnadd"));
       formtitle = document.getElementById("title");
