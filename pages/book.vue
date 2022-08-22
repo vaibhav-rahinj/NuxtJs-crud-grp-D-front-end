@@ -1,63 +1,75 @@
 <template>
   <div>
-    <h1 class="text-3xl text-blue-700">Book Management Project</h1>
+    <h1 class="text-3xl sm:text-xl text-center sm:text-center text-blue-700">
+      Book Management Project
+    </h1>
   </div>
-  <div>
+  <div
+    class="flex sm:w-auto md:w-auto w-fit justify-center sm:justify-center md:justify-center m-4 sm:m-4 md:m-4 p-2 sm:p-2 lg:p-2 md:p-2"
+  >
     <form action="" method="post">
-      <table>
+      <table class="sm:m-2 m-2 content-center">
         <tr>
-          <td><label for="book_id">Book ID</label></td>
+          <td><label class="px-2 sm:text-sm" for="book_id">Book ID</label></td>
           <td>
             <input
               v-model="book_id"
+              class="rounded-lg ring-zinc-700 ring-3 px-4"
               type="number"
               name="book_id"
               id="book_id"
               placeholder="Book ID"
+              required
             />
           </td>
         </tr>
         <tr>
-          <td><label for="book_name">Book Name</label></td>
+          <td><label class="px-2" for="book_name">Book Name</label></td>
           <td>
             <input
               v-model="book_name"
+              class="rounded-lg ring-zinc-700 ring-3 px-4"
               type="text"
               name="book_name"
               id="book_name"
               placeholder="Book Name"
+              required
             />
           </td>
         </tr>
 
         <tr>
-          <td><label for="author">Book Author</label></td>
+          <td><label class="px-2" for="author">Book Author</label></td>
           <td>
             <input
               v-model="author"
+              class="rounded-lg ring-zinc-700 ring-3 px-4"
               type="text"
               name="author"
               id="author"
               placeholder="Book Author"
+              required
             />
           </td>
         </tr>
         <tr>
           <td>
-            <label for="price">Book Price</label>
+            <label class="px-2" for="price">Book Price</label>
           </td>
           <td>
             <input
+              class="rounded-lg ring-zinc-700 ring-3 px-4"
               v-model="price"
               type="number"
               name="price"
               id="price"
               placeholder="Price"
+              required
             />
           </td>
         </tr>
         <tr>
-          <td><label for="book_image">Book Image</label></td>
+          <td><label class="px-2" for="book_image">Book Image</label></td>
           <td>
             <!-- v-model="bookData.book_image" -->
             <!-- v-bind="book_image" -->
@@ -68,26 +80,55 @@
               id="book_image"
               @change="imageBook(book_image)"
             /> -->
-            <input type="file" name="fileBookPath" @change="onFileChange" />
-            <button @click="uploadImage">Upload</button>
-          </td>
-        </tr>
-        <tr>
-          <td><label for="book_isbn">Book ISBN</label></td>
-          <td>
             <input
-              v-model="book_isbn"
-              type="text"
-              name="book_isbn"
-              id="book_isbn"
-              placeholder="Book ISBN"
+              class=""
+              type="file"
+              name="fileBookPath"
+              @change="onFileChange"
+              required
             />
+            <!-- <button
+              class="rounded-xl px-2 m-2 sm:m-2 sm:px-2 lg:px-2 sm:p-1 p-1 lg:p-1 md:p-1 bg-blue-600 hover:bg-green-600 text-white"
+              @click="uploadImage"
+            >
+              Upload Image
+            </button> -->
           </td>
         </tr>
         <tr>
           <td>
             <button
-              class="rounded-xl p-1 bg-blue-600 hover:bg-green-600 text-white"
+              class="rounded-xl px-2 m-2 sm:m-2 sm:px-2 lg:px-2 sm:p-1 ml-2 lg:p-1 md:p-1 bg-blue-600 hover:bg-green-600 text-white"
+              @click="uploadImage"
+            >
+              Upload
+            </button>
+          </td>
+          <td>
+            <p class="text-xs text-red-600">
+              *NOTE - After selecting image please click on upload before
+              submitting form.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td><label class="px-2" v for="book_isbn">Book ISBN</label></td>
+          <td>
+            <input
+              v-model="book_isbn"
+              class="rounded-lg ring-zinc-700 ring-3 px-4"
+              type="text"
+              name="book_isbn"
+              id="book_isbn"
+              placeholder="Book ISBN"
+              required
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="px-2">
+            <button
+              class="sm:rounded-xl ml-2 lg:rounded-xl rounded-xl md:rounded-xl sm:px-2 lg:px-2 px-2 bg-blue-600 sm:p-1 p-1 lg:p-1 md:p-1 hover:bg-green-800 text-white"
               type="submit"
               id="submit"
               @click="save"
@@ -97,9 +138,10 @@
           </td>
           <td>
             <button
-              class="rounded-xl bg-blue-600 p-1 hover:bg-red-600 text-white"
+              class="sm:rounded-xl lg:rounded-xl rounded-xl md:rounded-xl sm:px-2 lg:px-2 px-2 bg-blue-600 sm:p-1 p-1 lg:p-1 md:p-1 hover:bg-red-600 text-white"
               type="reset"
               id="reset"
+              @click="resetForm"
             >
               Reset
             </button>
@@ -111,22 +153,28 @@
         </tr> -->
       </table>
     </form>
-    <hr class="border-4 border-red-200" />
-    <!-- <h2>{{ hello1 }}</h2> -->
-    <p v-once v-show="show == true">{{ getdata() }}<br /></p>
-    <br />
+  </div>
+  <hr class="border-4 border-red-600" />
+
+  <div class="flex justify-center">
     <input
-      type="number"
+      type="text"
+      class="rounded-lg flex justify-center m-3 content-center ring-zinc-700 ring-3 px-4"
       name="check"
       id="check"
       v-model="check"
       @keyup="getSpecificBook(check)"
-      placeholder="find by Book ID"
+      placeholder="find by Book Data"
     />
-    <!-- <h2>{{ this.Book.dataShow() }}</h2> -->
-    <hr class="border-4 border-red-600" />
-
-    <table class="border-2 text-center border-neutral-600">
+  </div>
+  <!-- <h2>{{ this.Book.dataShow() }}</h2> -->
+  <hr class="border-4 border-red-600" />
+  <div
+    class="flex sm:w-auto md:w-auto w-fit sm:flex m5-5 md:flex justify-center md:justify-center sm:justify-center"
+  >
+    <table
+      class="border-2 mt-5 sm:text-xs md:text-xs w-fit sm:w-fit md:w-auto p-2 text-center border-neutral-600"
+    >
       <tr>
         <th class="border-2 border-neutral-600">Book ID</th>
         <th class="border-2 border-neutral-600">Book Name</th>
@@ -139,7 +187,7 @@
       </tr>
 
       <!-- <tr v-for="book in dataBook" : key="book"> -->
-      <tr v-for="book in data" :key="book">
+      <tr v-for="book in bookDetails" :key="book">
         <!-- <tr> -->
         <td class="border-2 border-neutral-600">{{ book.book_id }}</td>
         <td class="border-2 border-neutral-600">{{ book.book_name }}</td>
@@ -156,11 +204,16 @@
           >
             View Image
           </button> -->
-          <a
-            :href="'http://localhost:3005/book/' + book.book_image"
-            target="_blank"
-            >View Image</a
+
+          <button
+            class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
           >
+            <a
+              :href="'http://localhost:3006/book/' + book.book_image"
+              target="_blank"
+              >View Image</a
+            >
+          </button>
         </td>
         <td class="border-2 border-neutral-600">
           <button
@@ -204,6 +257,7 @@ export default {
       book_isbn: "",
 
       // imagePath:'',
+      bookDetails: [],
       check: "",
       fileBookPath: "",
       imagePath: "",
@@ -212,17 +266,32 @@ export default {
       dataBook1: {},
       //   data: [],
       bookData: {},
+
+      bookId1: "",
+      bookName1: "",
+      bookAuthor1: "",
+      bookPrice1: "",
+      bookImage1: "",
+      bookIsbn1: "",
+
+      bookId2: "",
+      bookName2: "",
+      bookAuthor2: "",
+      bookPrice2: "",
+      bookImage2: "",
+      bookIsbn2: "",
     };
   },
   //   computed: {},
   created() {
     // this.fetch();
-    this.save();
+    // this.save();
+    this.getdata();
   },
   methods: {
     // get all Book data API
     async getdata() {
-      await fetch("http://localhost:3005/book")
+      await fetch("http://localhost:3006/book")
         .then((data) => {
           //   this.dataBook1 = data.json();
           //   this.bookInfo.push(data.json());
@@ -233,6 +302,7 @@ export default {
           //   this.dataBook = data;
           this.dataBook1 = data;
           this.data = data;
+          this.bookDetails = data;
           //   this.dataBook1.push(data);
           console.log(data);
           console.log("variable");
@@ -246,7 +316,7 @@ export default {
     },
 
     async save(e) {
-      e.preventDefault();
+      // e.preventDefault();
       console.log(
         "=============",
         this.book_id,
@@ -262,7 +332,7 @@ export default {
       if (this.isEdit === true) {
         // this.allUserData[this.indexEdit] = this.userData;
 
-        fetch("http://localhost:3005/book/patch/" + this.indexEdit, {
+        fetch("http://localhost:3006/book/patch/" + this.indexEdit, {
           method: "PATCH",
           body: JSON.stringify({
             book_id: this.book_id,
@@ -277,12 +347,13 @@ export default {
             "Content-Type": "application/json",
           },
         }).then((res) => res.json());
-
+        alert("Book Edited Successfully.");
+        this.getdata();
         this.isEdit = false;
         this.indexEdit = -1;
       } else {
         // alert("unable to update");
-        fetch("http://localhost:3005/book", {
+        fetch("http://localhost:3006/book", {
           method: "POST",
           body: JSON.stringify({
             book_id: this.book_id,
@@ -296,6 +367,8 @@ export default {
             "Content-Type": "application/json",
           },
         }).then((res) => res.json());
+        alert("Book Added Successfully.");
+        this.getdata();
       }
 
       // fetch("http://localhost:3005/book", {
@@ -342,7 +415,7 @@ export default {
     async deleteBook(book_id) {
       // e.preventDefault();
       console.log("=============", book_id);
-      fetch("http://localhost:3005/book/" + book_id, {
+      fetch("http://localhost:3006/book/" + book_id, {
         method: "DELETE",
         // body: JSON.stringify({
         //   book_id: this.book_id,
@@ -357,9 +430,11 @@ export default {
         },
       }).then((res) => res.json());
       // console.log(save());
+      this.bookDetails = this.data;
+      this.getdata();
+
       const myButton = document.getElementById("submit");
       myButton.innerText = "Submit";
-      this.getdata();
     },
 
     // post image API
@@ -367,7 +442,7 @@ export default {
     async imageBook(fileBookPath) {
       // e.preventDefault();
       console.log("book_Image-=============", fileBookPath);
-      fetch("http://localhost:3005/book/image", {
+      fetch("http://localhost:3006/book/image", {
         method: "POST",
         // body: JSON.stringify({
         //   book_id: this.book_id,
@@ -412,7 +487,7 @@ export default {
       const fd = new FormData();
       fd.append("image", this.fileBookPath, this.fileBookPath.name);
       axios
-        .post("http://localhost:3005/book/image", fd)
+        .post("http://localhost:3006/book/image", fd)
         .then((res) => {
           console.log(res.data);
           this.imagePath = res.data;
@@ -434,7 +509,7 @@ export default {
     async showBookImage(book_image) {
       // event.preventDefault();
       console.log("book_Image -=============", book_image);
-      fetch("http://localhost:3005/book/" + book_image, {
+      fetch("http://localhost:3006/book/" + book_image, {
         // method: "GET",
 
         headers: {
@@ -442,7 +517,7 @@ export default {
         },
       }).then((res) => {
         console.log(res.json());
-        this.imagePath = "http://localhost:3005/book/" + book_image;
+        this.imagePath = "http://localhost:3006/book/" + book_image;
         // this.imagePath = res.json;
         res.json();
         alert("paste this link in your browser ->  " + this.imagePath);
@@ -454,14 +529,63 @@ export default {
       myButton.innerText = "Submit";
     },
 
+    getSpecificBook(checkData) {
+      if (checkData != null) {
+        this.bookDetails = this.data.filter((bookID) => {
+          this.bookId1 = checkData.toString();
+          this.bookId2 = bookID.book_id.toString();
+
+          // this.bookId1 = checkData.toLocaleLowerCase();
+          console.log(this.bookId1);
+          // this.bookId2 = bookID.book_id.toLocaleLowerCase();
+
+          this.bookName1 = checkData.toLocaleLowerCase();
+          this.bookName2 = bookID.book_name.toLocaleLowerCase();
+
+          this.bookAuthor1 = checkData.toLocaleLowerCase();
+          this.bookAuthor2 = bookID.author.toLocaleLowerCase();
+
+          this.bookPrice1 = checkData.toString();
+          this.bookPrice2 = bookID.price.toString();
+
+          if (
+            this.bookId2.startsWith(this.bookId1) ||
+            this.bookName2.startsWith(this.bookName1) ||
+            this.bookAuthor2.startsWith(this.bookAuthor1) ||
+            this.bookPrice2.startsWith(this.bookPrice1)
+          ) {
+            // toLocaleLowerCase
+            console.log(bookID);
+            return bookID;
+          }
+
+          // if (bookID.book_id == checkData) {
+          //   console.log("Selected user", bookID);
+          //   return bookID;
+          // }
+        });
+      }
+      if (checkData == "") {
+        this.bookDetails = this.data;
+      }
+    },
+
     async resetForm() {
       const myButton = document.getElementById("submit");
       myButton.innerText = "Submit";
-      // indexOfEdit=-1;
+
+      this.book_id = "";
+      this.book_name = "";
+      this.author = "";
+      this.price = "";
+      this.book_image = "";
+      this.book_isbn = "";
+
+      this.indexOfEdit = -1;
       this.isEdit = false;
     },
   },
 };
 
-// http://localhost:3003/book/
+// http://localhost:3006/book/
 </script>
