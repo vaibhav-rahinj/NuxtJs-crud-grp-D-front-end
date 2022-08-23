@@ -7,6 +7,7 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
+    "@nuxt/types": "^2.13.2",
     "autoprefixer": "^10.4.8",
     "nuxt": "^3.0.0-rc.8",
     "postcss": "^8.4.16",
@@ -15,6 +16,10 @@
   },
   "dependencies": {
     "@nestjs/platform-express": "^9.0.11",
-    "axios": "^0.27.2"
+
+    "@nuxt/typescript-build": "^2.1.0",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5"
+
   }
 }
