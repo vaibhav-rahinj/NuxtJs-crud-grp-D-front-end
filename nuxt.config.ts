@@ -1,14 +1,22 @@
 // import { defineNuxtConfig } from 'nuxt'
 
-import { defineNuxtConfig } from "nuxt";
+import { defineNuxtConfig } from 'nuxt';
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
-  buildModules: ["@nuxt/typescript-build"],
-  css: ["~/assets/css/tailwind.css"],
+ 
+
+  hooks: {
+    'vite:extend'({ nuxt, config }) {},
+    'vite:extendConfig'(clientConfig, { isClient, isServer }) {},
+    'webpack:config'(configs) {},
+  },
+  buildModules: ['@nuxt/typescript-build'],
+
+  css: ['~/assets/css/tailwind.css'],
   build: {
     postcss: {
-      postcssOptions: require("./postcss.config.js"),
+      postcssOptions: require('./postcss.config.js'),
     },
   },
   script: [
