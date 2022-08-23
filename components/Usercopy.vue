@@ -10,23 +10,23 @@
           class="sm:font-bold bg-slate-300 m-2 p-4 flex items-center justify-center"
         >
           <table class="m-5 p-5">
-            <tr>
-              <td><label>Id :</label></td>
-              <td>
+            <!-- <tr> -->
+              <!-- <td><label>Id :</label></td> -->
+              <!-- <td>
                 <input
                   type="text"
-                  v-model="myuser.User_id"
+                  v-model="state.myuser.User_Id"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
                 <br />
-              </td>
-            </tr>
+              </td> -->
+            <!-- </tr> -->
             <tr>
               <td><label>Name :</label></td>
               <td>
                 <input
                   type="text"
-                  v-model="myuser.User_Name"
+                  v-model="state.myuser.User_Name"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
                 <br />
@@ -37,7 +37,7 @@
               <td>
                 <input
                   type="email"
-                  v-model="myuser.Email"
+                  v-model="state.myuser.Email"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
               </td>
@@ -47,7 +47,7 @@
               <td>
                 <input
                   type="text"
-                  v-model="myuser.Roles"
+                  v-model="state.myuser.Roles"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
               </td>
@@ -56,7 +56,7 @@
               <td><label>Gender :</label></td>
               <td>
                 <select
-                  v-model="myuser.Gender"
+                  v-model="state.myuser.Gender"
                   class="font-bold sm:w-52 p-2 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 >
                   <option>Select</option>
@@ -82,7 +82,7 @@
               <td>
                 <input
                   type="text"
-                  v-model="myuser.State"
+                  v-model="state.myuser.State"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
               </td>
@@ -92,7 +92,7 @@
               <td>
                 <input
                   type="text"
-                  v-model="myuser.Country"
+                  v-model="state.myuser.Country"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
               </td>
@@ -109,7 +109,7 @@
                 <button
                   id="btnadd"
                   type="button"
-                  @click="addUserTodata()"
+                  @click="submitFormValues()"
                   class="sm:border rounded-lg p-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white"
                 >
                   Add User</button
@@ -156,11 +156,11 @@
             <th class="sm:py-3 px-6">Action</th>
           </tr>
           <tr
-            v-for="(user) in userarray"
+            v-for="(user, i) in state.userarray"
             :key="user"
             class="sm:bg-white border-b border-slate-300"
           >
-          <td class="sm:py-3 px-6">{{ user.User_Id }}</td>
+            <td class="sm:py-3 px-6">{{ user.User_Id }}</td>
             <td class="sm:py-3 px-6">{{ user.User_Name }}</td>
             <td class="sm:py-3 px-6">
               <a href="#" class="underline-offset-4 text-blue-600">{{
@@ -176,13 +176,13 @@
             <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
             <td colspan="2" class="sm:py-3 px-6">
               <button
-              @click="editUserDetails(user.User_Id)"
+              @click="editFormValues(i)"
                 class="sm:border rounded-lg p-1 bg-gradient-to-r from-blue-400 to-blue-900 text-white"
               >
                 Edit</button
               >&nbsp;
               <button
-                @click="deleteUser(user.User_Id)"
+              @click="deleteFormValues(user.User_Id)"
                 class="sm:border rounded-lg p-1 bg-gradient-to-r from-red-400 to-red-900 text-white"
               >
                 Delete
@@ -196,36 +196,36 @@
   </div>
 </template>
 <script setup lang="ts">
-let userarray: any = [];
-var myuser = {
-  User_id:'',
-  User_Name: "",
-  Email: "",
-  Roles: "",
-  Gender: "",
-  // Mobile: '',
-  // Address: '',
-  State: "",
-  Country: "",
-  // User_img: "",
-};
+let state = reactive({
+  userarray: [],
+  myuser: {
+    User_Id: null,
+    User_Name: "",
+    Email: "",
+    Roles: "",
+    Gender: "",
+    // Mobile: '',
+    // Address: '',
+    State: "",
+    Country: "",
+    // User_img: "",
+  },
+});
 
 var isEdit: boolean = false;
 getUserAPI();
 // Get API
 async function getUserAPI() {
-  const { data: count } = useFetch("http://localhost:4000/user/");
-  userarray = count;
-  console.log(count);
+  state.userarray = await $fetch("http://localhost:4000/user/");
 }
 
-async function addUserTodata() {
-  this.userarray.push(myuser);
-  const payload = myuser;
-  const Userid = payload.User_id;
-  // delete payload.User_id;
+async function submitFormValues() {
+  const payload = state.myuser;
+  const userId = payload.User_Id;
+  delete payload.User_Id;
   if (isEdit === true) {
-    await $fetch("http://localhost:4000/user/" + Userid, {
+    console.log("hi");
+    await $fetch('http://localhost:4000/user/' + userId, {
       method: "PUT",
       body: JSON.stringify(payload),
     });
@@ -236,15 +236,10 @@ async function addUserTodata() {
       body: JSON.stringify(payload),
     });
   }
+
   getUserAPI();
-
-  // let result = await response.json();
-  // let result = await response;
-  // alert(result.message);
-  // alert(result);
-
-  myuser = {
-    User_id:"",
+  state.myuser = {
+    User_Id: "",
     User_Name: "",
     Email: "",
     Roles: "",
@@ -256,32 +251,16 @@ async function addUserTodata() {
     // User_img: "",
   };
 }
-
-async function deleteUser(User_Id) {
-  console.log(User_Id);
-  await $fetch("http://localhost:4000/user/" + User_Id, {
-    method: "DELETE",
-  });
-
-  getUserAPI();
+async function editFormValues(i) {
+  console.log(i);
+  state.myuser = Object.assign({}, state.userarray[i]);
+  isEdit = true;
 }
-
-async function editUserDetails(User_Id) {
-   let EditUser = this.userarray.filter((user) => {
-   
-    if (user.User_Id == User_Id) {
-      myuser.User_Name = user.User_Name;
-      myuser.Email=user.Email;
-      myuser.Roles=user.Roles;
-      myuser.Gender=user.Gender;
-      myuser.State=user.State;
-      myuser.Country=user.Country;
-      return user;
-    }
-  });
-  const response = await $fetch('http://localhost:4000/user/'+ User_Id,{
-    method: 'PATCH',
-    body: JSON.stringify(myuser),
-  });
+async function deleteFormValues(index) {
+    console.log(index);
+    await $fetch('http://localhost:4000/user/' + index, {
+        method: 'DELETE'
+    });
+    getUserAPI();
 }
 </script>
