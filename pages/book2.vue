@@ -176,7 +176,7 @@
       </tr>
 
       <!-- <tr v-for="book in dataBook" : key="book"> -->
-      <tr v-for="book in state.bookDetails" :key="book">
+      <tr v-for="book in states.bookDetails" :key="book">
         <!-- <tr v-for="book in state.allBooks" :key="book"> -->
         <!-- <tr> -->
         <td class="border-2 border-neutral-600">{{ book.book_id }}</td>
@@ -240,7 +240,7 @@ let sampleBookData = {
   book_image: "",
   book_isbn: "",
 };
-let state = reactive({
+let states = reactive({
   allBooks: [],
   bookDetails: [],
 });
@@ -255,10 +255,10 @@ getBookData();
 
 // GET API
 async function getBookData() {
-  state.allBooks = await $fetch("http://localhost:3006/book");
-  console.log(state.bookDetails);
+  states.allBooks = await $fetch("http://localhost:3006/book");
+  console.log(states.bookDetails);
 
-  state.bookDetails = state.allBooks;
+  states.bookDetails = states.allBooks;
 }
 
 getBookData();
@@ -282,7 +282,7 @@ async function createBookData() {
 }
 // PATCH API
 async function editBookData(bookId: string) {
-  let bookEdit = state.allBooks.filter((book) => {
+  let bookEdit = states.allBooks.filter((book) => {
     if (book.book_id == bookId) {
       sampleBookData.book_id = book.book_id;
       sampleBookData.book_name = book.book_name;
@@ -313,7 +313,7 @@ async function deleteBookData(bookId: string) {
 async function getSpecificBook(check: string) {
   console.log("abc");
   if (check != null) {
-    state.bookDetails = state.allBooks.filter((bookID) => {
+    states.bookDetails = states.allBooks.filter((bookID) => {
       let bookId1 = check.toString();
       let bookId2 = bookID.book_id.toString();
 
@@ -340,7 +340,7 @@ async function getSpecificBook(check: string) {
     });
   }
   if (check == "") {
-    state.bookDetails = state.allBooks;
+    states.bookDetails = states.allBooks;
   }
 }
 
