@@ -17,4 +17,5 @@ export default defineNuxtConfig({
       async:true,
     }
   ],
+  // plugins:["~/plugins/vee-validate"],
 });
