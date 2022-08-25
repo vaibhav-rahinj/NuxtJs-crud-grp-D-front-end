@@ -242,7 +242,9 @@ let sampleBookData = {
 };
 let states = reactive({
   allBooks: [],
+
   editBook: [],
+
   bookDetails: [],
 });
 getBookData();
@@ -317,6 +319,8 @@ async function editBookData(bookId: string) {
   });
 
   console.log("edit", bookEdit);
+
+  console.log(bookEdit);
 
   const response = await $fetch("http://localhost:3006/book/patch/" + bookId, {
     method: "PATCH",
