@@ -247,7 +247,7 @@ export default {
       show: false,
       isEdit: false,
       indexEdit: -1,
-      myButton: "",
+      // myButton: "",
 
       book_id: "",
       book_name: "",

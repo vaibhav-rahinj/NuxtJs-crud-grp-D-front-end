@@ -10,12 +10,23 @@
           class="sm:font-bold bg-slate-300 m-2 p-4 flex items-center justify-center"
         >
           <table class="m-5 p-5">
+            <!-- <tr> -->
+              <!-- <td><label>Id :</label></td> -->
+              <!-- <td>
+                <input
+                  type="text"
+                  v-model="state.myuser.User_Id"
+                  class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
+                />
+                <br />
+              </td> -->
+            <!-- </tr> -->
             <tr>
               <td><label>Name :</label></td>
               <td>
                 <input
                   type="text"
-                  v-model="myuser.User_Name"
+                  v-model="state.myuser.User_Name"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
                 <br />
@@ -26,7 +37,7 @@
               <td>
                 <input
                   type="email"
-                  v-model="myuser.Email"
+                  v-model="state.myuser.Email"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
               </td>
@@ -36,7 +47,7 @@
               <td>
                 <input
                   type="text"
-                  v-model="myuser.Roles"
+                  v-model="state.myuser.Roles"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
               </td>
@@ -45,7 +56,7 @@
               <td><label>Gender :</label></td>
               <td>
                 <select
-                  v-model="myuser.Gender"
+                  v-model="state.myuser.Gender"
                   class="font-bold sm:w-52 p-2 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 >
                   <option>Select</option>
@@ -71,7 +82,7 @@
               <td>
                 <input
                   type="text"
-                  v-model="myuser.State"
+                  v-model="state.myuser.State"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
               </td>
@@ -81,23 +92,24 @@
               <td>
                 <input
                   type="text"
-                  v-model="myuser.Country"
-                  class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"/>
+                  v-model="state.myuser.Country"
+                  class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
+                />
               </td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td><label>User Profile :</label></td>
               <td>
                 <input type="file" class="sm:w-52 py-2 ml-2 mb-2" />
               </td>
-            </tr>
+            </tr> -->
             <tr>
               <td></td>
               <td>
                 <button
                   id="btnadd"
                   type="button"
-                  @click="addUserTodata()"
+                  @click="submitFormValues()"
                   class="sm:border rounded-lg p-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white"
                 >
                   Add User</button
@@ -131,6 +143,7 @@
           class="sm:font-bold m-2 relative bg-slate-300 border w-full text-left"
         >
           <tr class="sm:bg-slate-300 border my-2">
+            <th class="sm:py-3 px-6">User_Id</th>
             <th class="sm:py-3 px-6">User_Name</th>
             <th class="sm:py-3 px-6">Email</th>
             <th class="sm:py-3 px-6">Roles</th>
@@ -139,14 +152,15 @@
             <!-- <th class="sm:py-3 px-6">Address</th> -->
             <th class="sm:py-3 px-6">State</th>
             <th class="sm:py-3 px-6">Country</th>
-            <th class="sm:py-3 px-6">Profile Image</th>
+            <!-- <th class="sm:py-3 px-6">Profile Image</th> -->
             <th class="sm:py-3 px-6">Action</th>
           </tr>
           <tr
-            v-for="(user, i) in userarray"
+            v-for="(user, i) in state.userarray"
             :key="user"
             class="sm:bg-white border-b border-slate-300"
           >
+            <td class="sm:py-3 px-6">{{ user.User_Id }}</td>
             <td class="sm:py-3 px-6">{{ user.User_Name }}</td>
             <td class="sm:py-3 px-6">
               <a href="#" class="underline-offset-4 text-blue-600">{{
@@ -159,16 +173,16 @@
             <!-- <td class="sm:py-3 px-6">{{ user.Address }}</td> -->
             <td class="sm:py-3 px-6">{{ user.State }}</td>
             <td class="sm:py-3 px-6">{{ user.Country }}</td>
-            <td class="sm:py-3 px-6">{{ user.User_img }}</td>
+            <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
             <td colspan="2" class="sm:py-3 px-6">
               <button
-                @click="editUserDetails(i)"
+              @click="editFormValues(i)"
                 class="sm:border rounded-lg p-1 bg-gradient-to-r from-blue-400 to-blue-900 text-white"
               >
                 Edit</button
               >&nbsp;
               <button
-                @click="deleteUser(i)"
+              @click="deleteFormValues(user.User_Id)"
                 class="sm:border rounded-lg p-1 bg-gradient-to-r from-red-400 to-red-900 text-white"
               >
                 Delete
@@ -182,61 +196,11 @@
   </div>
 </template>
 <script setup lang="ts">
-
-let userarray: any =[];
-const myuser = {
-  User_Name: null,
-  Email: "",
-  Roles: "",
-  Gender: "",
-  // Mobile: '',
-  // Address: '',
-  State: "",
-  Country: "",
-  User_img: "",
-};
-const { data: count } = useFetch("http://localhost:4000/user/");
-userarray=count;
-console.log(count);
-
-// var isEdit: boolean = false;
-// let edtIndex: number = -1;
-// let searchText: string = "";
-
-// let flag: false;
-//       checkemail: "",
-//     };
-//   }
-// function filterRecords(): any {
-//   if (this.searchText) {
-//     return this.userarray.filter((user) =>
-//       user.User_Name.toLowerCase().includes(this.searchText.toLowerCase())
-//     );
-//   }
-//   return this.userarray;
-// }
-
-
-function addUserTodata() {
-  console.log("add")
-  // e.preventDefault();
-  // userarray = [...userarray, myuser];
-
-  // if (this.isEdit === true) {
-  //   this.userarray[this.edtIndex] = this.myuser;
-  //   (this.isEdit = false), (this.edtIndex = -1);
-  //   let updatebtn = document.getElementById("btnadd");
-  //   let formtitle = document.getElementById("title");
-  //   updatebtn.innerText = "Add User";
-  //   formtitle.innerText = "Add User";
-  // }
-  //
-  // else {
-    this.userarray.push(this.myuser);
-      
-  // }
-  this.myuser = {
-    User_Name: null,
+let state = reactive({
+  userarray: [],
+  myuser: {
+    User_Id: null,
+    User_Name: "",
     Email: "",
     Roles: "",
     Gender: "",
@@ -244,59 +208,59 @@ function addUserTodata() {
     // Address: '',
     State: "",
     Country: "",
-    User_img: "",
+    // User_img: "",
+  },
+});
+
+var isEdit: boolean = false;
+getUserAPI();
+// Get API
+async function getUserAPI() {
+  state.userarray = await $fetch("http://localhost:4000/user/");
+}
+
+async function submitFormValues() {
+  const payload = state.myuser;
+  const userId = payload.User_Id;
+  delete payload.User_Id;
+  if (isEdit === true) {
+    console.log("hi");
+    await $fetch('http://localhost:4000/user/' + userId, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+    isEdit = false;
+  } else {
+    await $fetch("http://localhost:4000/user/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  }
+
+  getUserAPI();
+  state.myuser = {
+    User_Id: "",
+    User_Name: "",
+    Email: "",
+    Roles: "",
+    Gender: "",
+    // Mobile: '',
+    // Address: '',
+    State: "",
+    Country: "",
+    // User_img: "",
   };
-//   // localStorage.setItem("user", JSON.stringify(this.userarray));
 }
-
-// function searchInput(e) {
-//   this.searchText = e.target.value;
-//   console.log(e.target.value);
-// }
-
-function deleteUser(index) {
-  this.userarray.splice(index, 1);
+async function editFormValues(i) {
+  console.log(i);
+  state.myuser = Object.assign({}, state.userarray[i]);
+  isEdit = true;
 }
-
-function editUserDetails(i) {
-//   // this.myuser.id = this.userarray[i].id;
-//   this.myuser.User_Name = this.userarray[i].User_Name;
-//   this.myuser.Email = this.userarray[i].Email;
-//   this.myuser.Roles = this.userarray[i].Roles;
-//   this.myuser.Gender = this.userarray[i].Gender;
-//   //   this.myuser.Mobile = this.userarray[i].Mobile;
-//   //   this.myuser.Address = this.userarray[i].Address;
-//   this.myuser.State = this.userarray[i].State;
-//   this.myuser.Country = this.userarray[i].Country;
-//   this.myuser.User_img = this.userarray[i].User_img;
-//   this.isEdit = true;
-//   this.edtIndex = i;
-//   let updatebtn = document.getElementById("btnadd");
-//   let formtitle = document.getElementById("title");
-//   updatebtn.innerText = "Update";
-//   formtitle.innerText = "Update User";
+async function deleteFormValues(index) {
+    console.log(index);
+    await $fetch('http://localhost:4000/user/' + index, {
+        method: 'DELETE'
+    });
+    getUserAPI();
 }
-
-// function resetTodata() {
-//   this.isEdit = false;
-//   this.edtIndex = -1;
-//   this.myuser = {
-//     User_Name: null,
-//     Email: "",
-//     Roles: "",
-//     Gender: "",
-//     // Mobile: '',
-//     // Address: '',
-//     State: "",
-//     Country: "",
-//     User_img: "",
-//   };
-//   function updatebtn() {
-//     document.getElementById("btnadd").innerText = "Submit";
-//   }
-
-//   function formtitle() {
-//     document.getElementById("title").innerText = "Add User";
-//   }
-// }
 </script>
