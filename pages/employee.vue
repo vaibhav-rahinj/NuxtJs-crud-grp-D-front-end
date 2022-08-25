@@ -190,10 +190,9 @@ let sampleData = {
   emp_email: "",
   emp_address: "",
 };
-const containsUser =(value)=>{
+const containsUser = (value) => {
   return value.includes("user");
-}
-
+};
 
 const empp = reactive({
   allEmp: [],
