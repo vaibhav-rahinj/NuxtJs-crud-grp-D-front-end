@@ -4,7 +4,6 @@
       <div>
         <h1>This is emloyee CRUD</h1>
         <form
-          @submit="Submit"
           method="post"
           class="bg-gray-100 border-black rounded-lg border-2 px-12"
         >
@@ -42,6 +41,13 @@
                 type="text"
                 placeholder="Enter Employee First Name"
               />
+              <span
+                v-for="error in v$.empFname.$errors"
+                :key="error.$uid"
+                class="text-red-400"
+              >
+                {{ error.$message }}
+              </span>
             </div>
 
             <div class="">
@@ -59,6 +65,9 @@
                 type="text"
                 placeholder="Enter Employee Last Name"
               />
+              <span v-for="error in v$.empLname.$errors" :key="error.$uid">
+                {{ error.$message }}
+              </span>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
@@ -76,6 +85,9 @@
                   type="email"
                   placeholder="Enter Employee Email"
                 />
+                <span v-for="error in v$.email.$errors" :key="error.$uid">
+                  {{ error.$message }}</span
+                >
               </div>
             </div>
 
@@ -91,12 +103,15 @@
                 name="emp_address"
                 placeholder="Address"
               />
+              <span v-for="error in v$.emp_address.$errors" :key="error.$uid">
+                {{ error.$message }}
+              </span>
             </div>
             <div id="hide">
               <button
                 class="py-1 px-5 mr-5 bg-blue-500 hover:bg-blue-700 text-white font-bold text-center rounded-md mb-3"
                 type="submit"
-                @click="Submit"
+                @click="Submit()"
               >
                 Submit
               </button>
@@ -159,7 +174,15 @@
     </main>
   </div>
 </template>
+
 <script setup lang="ts">
+import useVuelidate, {
+  required,
+  email,
+  minLength,
+  maxLength,
+} from "~/utils/vuelidate/useVuelidate";
+import { reactive, computed } from "vue";
 let sampleData = {
   id: null,
   empFname: "",
@@ -167,9 +190,10 @@ let sampleData = {
   emp_email: "",
   emp_address: "",
 };
+const containsUser = (value) => {
+  return value.includes("user");
+};
 
-const { data: count } = await useFetch("http://localhost:4000/employee/");
-const emp: any = count;
 const empp = reactive({
   allEmp: [],
 });
@@ -181,18 +205,38 @@ async function getApi() {
 }
 // POST API
 async function Submit() {
-  event.preventDefault();
-  console.log(sampleData);
+  // event.preventDefault();
+  const result = await v$.value.$validate();
+  if (result) {
+    alert("success, form submited");
+  } else {
+    alert("erroe, form not submitted");
+  }
 
   await $fetch("http://localhost:4000/employee/", {
     method: "POST",
     body: sampleData,
   });
+
   getApi();
 }
+
 // PATCH API
-async function onEdit(id: number) {
-  const response = await $fetch("http://localhost:4000/employee/update/" + id, {
+async function onEdit(id) {
+  let empEdit = empp.allEmp.filter((employ) => {
+    event.preventDefault();
+    if (employ.id == id) {
+      sampleData.id = employ.id;
+      sampleData.empFname = employ.empFname;
+      sampleData.empLname = employ.empLname;
+      sampleData.emp_email = employ.emp_email;
+      sampleData.emp_address = employ.emp_address;
+
+      return employ;
+    }
+  });
+  console.log(empEdit);
+  const response = await $fetch("http://localhost:4000/employee/" + id, {
     method: "PATCH",
     body: sampleData,
   });
@@ -204,5 +248,48 @@ async function onDelete(id: number) {
     method: "DELETE",
   });
   getApi();
+}
+
+const State = reactive({
+  form: {
+    empFname: "",
+    empLname: "",
+    email: "",
+    emp_address: "",
+  },
+});
+
+/**
+ * validation rules
+ */
+const rules = computed(() => {
+  return {
+    empFname: { required, minLength: minLength(3) },
+    empLname: { required, minLength: minLength(3) },
+    email: { required, email },
+    emp_address: {
+      required,
+      minLength: minLength(3),
+      maxLength: maxLength(30),
+      containsUser,
+    },
+  };
+});
+const v$ = useVuelidate(rules, State.form);
+
+/**
+ * login
+ *
+ * @returns {Promise<void>}
+ */
+async function login(): Promise<void> {
+  const isFormCorrect = await v$.value.$validate();
+  if (!isFormCorrect) {
+    // Show error messages
+    return;
+  }
+
+  const payload = { ...State.form };
+  // Call API with payload
 }
 </script>
