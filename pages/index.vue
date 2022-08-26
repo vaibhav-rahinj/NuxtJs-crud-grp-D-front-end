@@ -1,4 +1,6 @@
 <template>
+
+  
   <br />
   <br />
   <div class="flex items-center justify-center">
@@ -72,7 +74,6 @@
         </button>
       </div>
     </div>
-    &nbsp; &nbsp;
   <div
     class="block rounded-lg shadow-lg bg-white max-w-sm text-center border border-solid border-black w-44 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800"
   >
