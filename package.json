@@ -16,6 +16,8 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.1.2",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
     "@nestjs/platform-express": "^9.0.11",
     "@nuxt/typescript-build": "^2.1.0",
     "@vuelidate/core": "^2.0.0-alpha.43",

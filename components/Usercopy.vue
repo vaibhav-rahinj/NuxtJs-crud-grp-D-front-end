@@ -306,7 +306,7 @@ const rules = computed(() => {
   return {
     User_Name: { required, alpha, minLength: minLength(4) },
     Email: { required, email },
-    Roles: { alpha },
+    Roles: { required, alpha },
     Gender: { required },
     // Mobile: '',
     // Address: '',
@@ -330,7 +330,7 @@ async function submitFormValues() {
     const userId = payload.User_Id;
     delete payload.User_Id;
     if (isEdit === true) {
-      console.log("hi");
+      // console.log("hi");
       await $fetch("http://localhost:4000/user/" + userId, {
         method: "PUT",
         body: JSON.stringify(payload),
