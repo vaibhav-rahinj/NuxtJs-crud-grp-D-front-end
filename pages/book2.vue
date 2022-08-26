@@ -176,7 +176,7 @@
       </tr>
 
       <!-- <tr v-for="book in dataBook" : key="book"> -->
-      <tr v-for="book in state.bookDetails" :key="book">
+      <tr v-for="book in State.bookDetails" :key="book">
         <!-- <tr v-for="book in state.allBooks" :key="book"> -->
         <!-- <tr> -->
         <td class="border-2 border-neutral-600">{{ book.book_id }}</td>
@@ -234,13 +234,13 @@ let check1;
 
 let sampleBookData = {
   book_id: null,
-  book_name: "",
-  author: "",
+  book_name: '',
+  author: '',
   price: null,
-  book_image: "",
-  book_isbn: "",
+  book_image: '',
+  book_isbn: '',
 };
-let state = reactive({
+let State = reactive({
   allBooks: [],
   bookDetails: [],
 });
@@ -255,10 +255,10 @@ getBookData();
 
 // GET API
 async function getBookData() {
-  state.allBooks = await $fetch("http://localhost:3006/book");
-  console.log(state.bookDetails);
+  State.allBooks = await $fetch('http://localhost:3006/book');
+  console.log(State.bookDetails);
 
-  state.bookDetails = state.allBooks;
+  State.bookDetails = State.allBooks;
 }
 
 getBookData();
@@ -268,8 +268,8 @@ async function createBookData() {
   event.preventDefault();
   console.log(sampleBookData);
 
-  let response = await $fetch("http://localhost:3006/book", {
-    method: "POST",
+  let response = await $fetch('http://localhost:3006/book', {
+    method: 'POST',
     body: sampleBookData,
   });
   // let result = await response.json();
@@ -277,12 +277,12 @@ async function createBookData() {
   // alert(result.message);
   console.log(result);
 
-  alert("Book added");
+  alert('Book added');
   getBookData();
 }
 // PATCH API
 async function editBookData(bookId: string) {
-  let bookEdit = state.allBooks.filter((book) => {
+  let bookEdit = State.allBooks.filter((book) => {
     if (book.book_id == bookId) {
       sampleBookData.book_id = book.book_id;
       sampleBookData.book_name = book.book_name;
@@ -296,24 +296,24 @@ async function editBookData(bookId: string) {
 
   console.log(bookEdit);
 
-  const response = await $fetch("http://localhost:3006/book/patch/" + bookId, {
-    method: "PATCH",
+  const response = await $fetch('http://localhost:3006/book/patch/' + bookId, {
+    method: 'PATCH',
     body: JSON.stringify(sampleBookData),
   });
   getBookData();
 }
 // Delete API
 async function deleteBookData(bookId: string) {
-  await $fetch("http://localhost:3006/book/" + bookId, {
-    method: "DELETE",
+  await $fetch('http://localhost:3006/book/' + bookId, {
+    method: 'DELETE',
   });
   getBookData();
 }
 
 async function getSpecificBook(check: string) {
-  console.log("abc");
+  console.log('abc');
   if (check != null) {
-    state.bookDetails = state.allBooks.filter((bookID) => {
+    State.bookDetails = State.allBooks.filter((bookID) => {
       let bookId1 = check.toString();
       let bookId2 = bookID.book_id.toString();
 
@@ -339,19 +339,19 @@ async function getSpecificBook(check: string) {
       }
     });
   }
-  if (check == "") {
-    state.bookDetails = state.allBooks;
+  if (check == '') {
+    State.bookDetails = State.allBooks;
   }
 }
 
 // reset form
 async function resetForm() {
-  sampleBookData.book_id = "";
-  sampleBookData.book_name = "";
-  sampleBookData.author = "";
-  sampleBookData.price = "";
-  sampleBookData.book_image = "";
-  sampleBookData.book_isbn = "";
+  sampleBookData.book_id = '';
+  sampleBookData.book_name = '';
+  sampleBookData.author = '';
+  sampleBookData.price = '';
+  sampleBookData.book_image = '';
+  sampleBookData.book_isbn = '';
 
   //   this.indexOfEdit = -1;
   //   this.isEdit = false;

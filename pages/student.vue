@@ -2,13 +2,27 @@
   <main class="flex justify-center w-full h-screen">
     <div>
       <form
-        @submit="onFormSubmit()"
+        method="post"
         class="bg-gray-100 border-black rounded-lg border-2 px-12"
       >
         <table>
           <h2 class="text-teal-900 text-xl font-bold pt-6">Information Form</h2>
           <hr />
-          <div class="mb-6">
+          <!-- <label
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="stdid"
+            >
+              Student Id
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
+              id="stdid"
+              v-model="sampleData.stdid"
+              type="text"
+              placeholder="Student Id"
+            /> -->
+
+          <div class="">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
               for="fname"
@@ -16,13 +30,20 @@
               First Name
             </label>
             <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:bg-white focus:border-gray-500"
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="fname"
               v-model="sampleData.fname"
               type="text"
               placeholder="First Name"
             />
+            <span
+              v-for="error in v$.fname.$errors"
+              :key="error.$uid"
+              class="text-red-500"
+              >{{ error.$message }}</span
+            >
           </div>
+
           <div class="">
             <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -31,12 +52,18 @@
               Last Name
             </label>
             <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-2 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               id="lname"
               v-model="sampleData.lname"
               type="text"
               placeholder="Last Name"
             />
+            <span
+              v-for="error in v$.lname.$errors"
+              :key="error.$uid"
+              class="text-red-500"
+              >{{ error.$message }}</span
+            >
           </div>
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full px-3">
@@ -53,6 +80,12 @@
                 type="email"
                 placeholder="Email"
               />
+              <span
+                v-for="error in v$.Stud_email.$errors"
+                :key="error.$uid"
+                class="text-red-500"
+                >{{ error.$message }}</span
+              >
             </div>
           </div>
           <div class="flex flex-wrap -mx-3 mb-2">
@@ -63,13 +96,13 @@
               >
                 Gender
               </label>
-              <input
+              <!-- <input
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="Stud_gender"
                 v-model="sampleData.Stud_gender"
                 type="text"
                 placeholder="Gender"
-              />
+              /> -->
               <!-- <label
                 for="gender"
                 class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -87,7 +120,29 @@
                 for="gender"
                 class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >Female</label
-              > -->
+              >
+              <input
+                id="gender"
+                type="radio"
+                ref="gender"
+                value=""
+                name="default-radio"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              /> -->
+              <select
+                class="dropdown-toggle px-2 py-2 bg-gray-200 text-black font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-200 hover:shadow-lg focus:bg-gray-200 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-200 active:shadow-lg active:text-black transition duration-150 ease-in-out flex items-center whitespace-nowrap"
+                name="department"
+                v-model="sampleData.Stud_gender"
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+              <span
+                v-for="error in v$.Stud_gender.$errors"
+                :key="error.$uid"
+                class="text-red-500"
+                >{{ error.$message }}</span
+              >
             </div>
           </div>
           <div class="rounded mb-4 shadow appearance-none label-floating">
@@ -101,8 +156,14 @@
               type="text"
               placeholder="Address"
             />
+            <span
+              v-for="error in v$.Stud_address.$errors"
+              :key="error.$uid"
+              class="text-red-500"
+              >{{ error.$message }}</span
+            >
           </div>
-          <div>
+          <!-- <div>
             <label
               for="Stdimage"
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -120,33 +181,48 @@
             >
               Upload
             </button>
-          </div>
-          <div id="hide">
+          </div> -->
+          <div>
             <button
               class="py-1 px-5 mr-5 bg-blue-500 hover:bg-blue-700 text-white font-bold text-center rounded-md mb-3"
               type="submit"
-              @click="onFormSubmit()"
+              @click="onSubmit()"
             >
-              Submit
+              {{ State.Submit }}
             </button>
             <button
               class="py-1 px-5 bg-blue-500 hover:bg-blue-700 text-white font-bold text-center rounded-md mb-3"
               type="reset"
+              @click="resetForm()"
             >
               Reset
             </button>
           </div>
+
+          <!-- <div class="mt-4 border-2 border-red-600">
+            <p class="text-red-500">Errors:</p>
+            <span
+              class="text-red-500 p-11"
+              v-for="error in v$.$errors"
+              :key="error.$uid"
+            >
+              {{ error.$property }} - {{ error.$message }},</span
+            >
+          </div> -->
+          <!-- <div>{{ State.errorBack }}</div> -->
         </table>
       </form>
-      <hr class="border-4 border-red-600" />
+      <!-- <hr class="border-4 border-red-600" /> -->
       <div class="flex justify-center">
-        <button
-          class="py-1 px-5 mr-5 bg-blue-500 hover:bg-blue-700 text-white font-bold text-center rounded-md mb-3"
-          type="submit"
-          @click="getStdAPI()"
-        >
-          Get
-        </button>
+        <input
+          type="text"
+          class="rounded-lg flex justify-center m-3 content-center ring-zinc-700 ring-3 px-4"
+          name="check"
+          id="check"
+          v-model="Check1"
+          @keyup="getSpecificBook(Check1)"
+          placeholder="find by Book Data"
+        />
       </div>
       <br />
       <table class="list">
@@ -157,11 +233,11 @@
           <th class="px-4 border-black rounded-lg border-2">Email</th>
           <th class="px-4 border-black rounded-lg border-2">Gender</th>
           <th class="px-4 border-black rounded-lg border-2">Address</th>
-          <th class="px-4 border-black rounded-lg border-2">Student Image</th>
+          <!-- <th class="px-4 border-black rounded-lg border-2">Student Image</th> -->
           <th class="px-4 border-black rounded-lg border-2">Action</th>
         </tr>
 
-        <tr v-for="item of state.allStud" :key="item.stdid">
+        <tr v-for="item of State.allStud" :key="item.stdid">
           <td class="px-4 border-black rounded-lg border-2">
             {{ item.stdid }}
           </td>
@@ -180,9 +256,9 @@
           <td class="px-4 border-black rounded-lg border-2">
             {{ item.Stud_address }}
           </td>
-          <td class="px-4 border-black rounded-lg border-2">
+          <!-- <td class="px-4 border-black rounded-lg border-2">
             {{ item.image }}
-          </td>
+          </td> -->
           <td class="px-4 border-black rounded-lg border-2">
             {{ item.Action }}
             <button
@@ -204,58 +280,138 @@
   </main>
 </template>
 
-<script setup>
-let state = reactive({
+<script lang="ts">
+import useVuelidate, {
+  required,
+  minLength,
+  email,
+  alpha,
+  maxLength,
+} from '~/utils/vuelidate/useVuelidate';
+</script>
+
+<script setup lang="ts">
+// import { required, minLength, between } from 'vuelidate/lib/validators';
+import { reactive, computed } from 'vue';
+
+let Check1: any;
+let isEdit = false;
+let State = reactive({
+  select: true,
+  Submit: 'submit',
   allStud: [],
-});
-let sampleData = {
+  StudDetails: [],
   stdid: '',
+  errorBack: {},
+});
+let sampleData = reactive({
   fname: '',
   lname: '',
   Stud_email: '',
   Stud_gender: '',
   Stud_address: '',
-};
+});
+//validation
+
+// const Stud = (value: any) => {
+//   return value.include('user');
+// };
+const rules = computed(() => {
+  return {
+    fname: {
+      required,
+      alpha,
+      minLength: minLength(3),
+      maxLength: maxLength(35),
+    },
+    lname: {
+      required,
+      alpha,
+      minLength: minLength(3),
+      maxLength: maxLength(35),
+    },
+    Stud_email: { required, email },
+    Stud_gender: { required },
+    Stud_address: { required },
+  };
+});
+const v$ = useVuelidate(rules, sampleData);
+
 getStdAPI();
 
 // GET API
 async function getStdAPI() {
-  state.allStud = await $fetch('http://localhost:3003/student/stddata');
+  State.allStud = await $fetch('http://localhost:3003/student/stddata');
 }
-// POST API
-async function onFormSubmit() {
-  // stdid: state.allStud.length,
-  // fname: 'vaibhav' + state.allStud.length,
-  // lname: 'rahinj' + state.allStud.length,
-  // Stud_email: 'v@gmail.com' + state.allStud.length,
-  // Stud_gender: 'male' + state.allStud.length,
-  // Stud_address: 'ghjgj' + state.allStud.length,
-  // await $fetch("http://localhost:8080/product", {
-  //   method: "POST",
-  //   body: JSON.stringify(mydata.product),
-  // };
-  await $fetch('http://localhost:3003/student/stdcreate', {
-    method: 'POST',
-    body: sampleData,
-  });
-  getStdAPI();
+// async function onFormSubmit() {
+//   alert('xvcv');
+//   await $fetch('http://localhost:3003/student/stdcreate', {
+//     method: 'POST',
+//     body: sampleData,
+//   });
+//   getStdAPI();
+// }
+
+//clearData
+async function clearData() {
+  sampleData.fname = '';
+  sampleData.lname = '';
+  sampleData.Stud_email = '';
+  sampleData.Stud_gender = '';
+  sampleData.Stud_address = '';
 }
 
+// POST API
+async function onSubmit() {
+  const result = await v$.value.$validate();
+  // if (!result) {
+  //   alert('forms successfully submit..');
+  // } else {
+  //   alert('form validation failed');
+  // }
+  event.preventDefault();
+
+  if (State.select === true) {
+    const response = await $fetch('http://localhost:3003/student/stdCreate/', {
+      method: 'POST',
+      body: JSON.stringify(sampleData),
+    });
+    alert('data post');
+    clearData();
+  } else {
+    putData();
+   alert('data Update');
+    State.Submit = 'Submit';
+  }
+  getStdAPI();
+  clearData();
+
+  // this.v$.value.$validate();
+  // if (!this.v$.$error) {
+  //   console.log('submit');
+  // } else {
+  //   console.log('not submit');
+  // }
+
+  //const payload = { ...sampleData };
+}
 // PATCH API
-async function onClickOfEditStud(stdid) {
-  let studEdit = state.allStud.filter((std) => {
-    if (std.stdid == stdid) {
-      sampleData.stdid = std.stdid;
-      sampleData.fname = std.fname;
-      sampleData.lname = std.lname;
-      sampleData.Stud_email = std.Stud_email;
-      sampleData.Stud_gender = std.Stud_gender;
-      sampleData.Stud_address = std.Stud_address;
-      return std;
-    }
-  });
-  console.log(studEdit);
-  //   sampleBookData.book_id = bookEdit.book_id;
+async function onClickOfEditStud(stdid: any) {
+  State.Submit = 'Update';
+  State.select = false;
+  const studEdit: any = await $fetch('http://localhost:3003/student/' + stdid);
+  State.stdid = studEdit.stdid;
+  console.log(State.stdid);
+  sampleData.fname = studEdit.fname;
+  sampleData.lname = studEdit.lname;
+  sampleData.Stud_email = studEdit.Stud_email;
+  sampleData.Stud_gender = studEdit.Stud_gender;
+  sampleData.Stud_address = studEdit.Stud_address;
+  // isEdit = true;
+}
+
+async function putData() {
+  const stdid = State.stdid;
   const response = await $fetch(
     'http://localhost:3003/student/update/' + stdid,
     {
@@ -264,13 +420,74 @@ async function onClickOfEditStud(stdid) {
     },
   );
   getStdAPI();
+  clearData();
 }
-
 // Delete API
-async function onDeleteOfStud(stdid) {
+async function onDeleteOfStud(stdid: any) {
   await $fetch('http://localhost:3003/student/' + stdid, {
     method: 'DELETE',
   });
+  isEdit = false;
+
   getStdAPI();
 }
+
+async function getSpecificBook(check: string) {
+  console.log('abc');
+  if (check != null) {
+    State.StudDetails = State.allStud.filter((stdID) => {
+      let stdid1 = check.toString();
+      let stdid2 = stdID.stdid.toString();
+      let stdfname1 = check.toLocaleLowerCase();
+      let stdfname2 = stdID.fname.toLocaleLowerCase();
+
+      let stdlname1 = check.toLocaleLowerCase();
+      let stdlname2 = stdID.lname.toLocaleLowerCase();
+
+      let stdemail1 = check.toString();
+      let stdemail2 = stdID.Stud_email.toString();
+
+      let stdgender1 = check.toString();
+      let stdgender2 = stdID.Stud_gender.toString();
+
+      let stdaddress1 = check.toString();
+      let stdaddress2 = stdID.Stud_address.toString();
+
+      if (
+        stdid2.startsWith(stdid1) ||
+        stdfname2.startsWith(stdfname1) ||
+        stdlname2.startsWith(stdlname1) ||
+        stdemail2.startsWith(stdemail1) ||
+        stdgender2.startsWith(stdgender1) ||
+        stdaddress2.startsWith(stdaddress1)
+      ) {
+        console.log(stdID);
+        return stdID;
+      }
+    });
+    resetForm();
+    isEdit = false;
+  }
+  if (check == '') {
+    State.StudDetails = State.allStud;
+  }
+}
+
+//reset form
+async function resetForm() {
+  sampleData.fname = '';
+  sampleData.lname = '';
+  sampleData.Stud_email = '';
+  sampleData.Stud_gender = '';
+  sampleData.Stud_address = '';
+  isEdit = false;
+}
+
+// const { error: backError, data: posts } = await useFetch(
+//   'http://localhost:3003/student',
+//   { method: 'POST', body: JSON.stringify(sampleData) },
+// );
+// State.errorBack = backError;
+// console.log(backError);
+// console.log(posts);
 </script>
