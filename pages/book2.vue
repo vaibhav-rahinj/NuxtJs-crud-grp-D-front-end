@@ -37,7 +37,6 @@
             />
           </td>
         </tr>
-
         <tr>
           <td><label class="px-2" for="author">Book Author</label></td>
           <td>
@@ -68,7 +67,6 @@
             />
           </td>
         </tr>
-
         <tr>
           <td><label class="px-2" for="book_image">Book Image</label></td>
           <td>
@@ -83,7 +81,6 @@
             />
           </td>
         </tr>
-
         <tr>
           <td>
             <!-- <button
@@ -144,7 +141,6 @@
     </form>
   </div>
   <hr class="border-4 border-red-600" />
-
   <div class="flex justify-center">
     <input
       type="text"
@@ -174,9 +170,8 @@
         <!-- <th></th> -->
         <th colspan="3" class="border-2 border-neutral-600">Action</th>
       </tr>
-
       <!-- <tr v-for="book in dataBook" : key="book"> -->
-      <tr v-for="book in State.bookDetails" :key="book">
+      <tr v-for="book in states.bookDetails" :key="book">
         <!-- <tr v-for="book in state.allBooks" :key="book"> -->
         <!-- <tr> -->
         <td class="border-2 border-neutral-600">{{ book.book_id }}</td>
@@ -194,7 +189,6 @@
           >
             View Image
           </button> -->
-
           <button
             class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
           >
@@ -228,10 +222,8 @@
     </table>
   </div>
 </template>
-
 <script setup lang="ts">
 let check1;
-
 let sampleBookData = {
   book_id: null,
   book_name: '',
@@ -240,34 +232,29 @@ let sampleBookData = {
   book_image: '',
   book_isbn: '',
 };
-let State = reactive({
+let states = reactive({
   allBooks: [],
+  editBook: [],
   bookDetails: [],
 });
 getBookData();
-
 // Calling Get API
 // function getBooks() {
 //   getBookData().then((data: any) => {
 //     state.allBooks = data;
 //   });
 // }
-
 // GET API
 async function getBookData() {
-  State.allBooks = await $fetch('http://localhost:3006/book');
-  console.log(State.bookDetails);
-
-  State.bookDetails = State.allBooks;
+  states.allBooks = await $fetch('http://localhost:3006/book');
+  console.log(states.bookDetails);
+  states.bookDetails = states.allBooks;
 }
-
 getBookData();
-
 // // POST API
 async function createBookData() {
   event.preventDefault();
   console.log(sampleBookData);
-
   let response = await $fetch('http://localhost:3006/book', {
     method: 'POST',
     body: sampleBookData,
@@ -276,13 +263,29 @@ async function createBookData() {
   let result = await response;
   // alert(result.message);
   console.log(result);
-
   alert('Book added');
   getBookData();
 }
 // PATCH API
 async function editBookData(bookId: string) {
-  let bookEdit = State.allBooks.filter((book) => {
+  //   states.editBook = await $fetch("http://localhost:3006/book/" + bookId);
+  // states.editBook
+  // let specificBook = [];
+  // let specificBook = await $fetch("http://localhost:3006/book/" + bookId);
+  // console.log("specific", specificBook);
+  // alert(specificBook.book_id);
+  //   let bookEdit =
+  // let bookEdit = states.editBook.filter((book) => {
+  //   if (book.book_id == bookId) {
+  //     sampleBookData.book_id = book.book_id;
+  //     sampleBookData.book_name = book.book_name;
+  //     sampleBookData.author = book.author;
+  //     sampleBookData.price = book.price;
+  //     sampleBookData.book_image = book.book_image;
+  //     sampleBookData.book_isbn = book.book_isbn;
+  //     return book;
+  //   }
+  let bookEdit = states.allBooks.filter((book) => {
     if (book.book_id == bookId) {
       sampleBookData.book_id = book.book_id;
       sampleBookData.book_name = book.book_name;
@@ -293,9 +296,8 @@ async function editBookData(bookId: string) {
       return book;
     }
   });
-
+  console.log('edit', bookEdit);
   console.log(bookEdit);
-
   const response = await $fetch('http://localhost:3006/book/patch/' + bookId, {
     method: 'PATCH',
     body: JSON.stringify(sampleBookData),
@@ -309,25 +311,19 @@ async function deleteBookData(bookId: string) {
   });
   getBookData();
 }
-
 async function getSpecificBook(check: string) {
   console.log('abc');
   if (check != null) {
-    State.bookDetails = State.allBooks.filter((bookID) => {
+    states.bookDetails = states.allBooks.filter((bookID) => {
       let bookId1 = check.toString();
       let bookId2 = bookID.book_id.toString();
-
       console.log(bookId1);
-
       let bookName1 = check.toLocaleLowerCase();
       let bookName2 = bookID.book_name.toLocaleLowerCase();
-
       let bookAuthor1 = check.toLocaleLowerCase();
       let bookAuthor2 = bookID.author.toLocaleLowerCase();
-
       let bookPrice1 = check.toString();
       let bookPrice2 = bookID.price.toString();
-
       if (
         bookId2.startsWith(bookId1) ||
         bookName2.startsWith(bookName1) ||
@@ -340,10 +336,9 @@ async function getSpecificBook(check: string) {
     });
   }
   if (check == '') {
-    State.bookDetails = State.allBooks;
+    states.bookDetails = states.allBooks;
   }
 }
-
 // reset form
 async function resetForm() {
   sampleBookData.book_id = '';
@@ -352,7 +347,6 @@ async function resetForm() {
   sampleBookData.price = '';
   sampleBookData.book_image = '';
   sampleBookData.book_isbn = '';
-
   //   this.indexOfEdit = -1;
   //   this.isEdit = false;
 }

@@ -4,6 +4,8 @@ import { defineNuxtConfig } from 'nuxt';
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+ 
+
   hooks: {
     'vite:extend'({ nuxt, config }) {},
     'vite:extendConfig'(clientConfig, { isClient, isServer }) {},
@@ -19,9 +21,10 @@ export default defineNuxtConfig({
   },
   script: [
     {
-      'data-ad-client': 'ca-pub-9456709395715105',
-      src: 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js',
+      "data-ad-client": "ca-pub-9456709395715105",
+      src: "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js",
       async: true,
     },
   ],
+  // plugins:["~/plugins/vee-validate"],
 });
