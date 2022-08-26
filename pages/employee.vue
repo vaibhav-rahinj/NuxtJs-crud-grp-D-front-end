@@ -237,11 +237,7 @@ async function Submit() {
     body: sampleData,
   });
   // event.preventDefault();
-  if (result) {
-    alert("success, form submited");
-  } else {
-    alert("error, form not submitted");
-  }
+  
 
   getApi();
   clearData();
@@ -249,7 +245,7 @@ async function Submit() {
 
 // PATCH API
 async function onEdit(id) {
-  State.Submit = "Update";
+  // State.Submit = "Update";
   let empEdit = empp.allEmp.filter((employ) => {
     event.preventDefault();
     if (employ.id == id) {
@@ -261,13 +257,13 @@ async function onEdit(id) {
       return employ;
     }
   });
-  console.log(empEdit);
+  // console.log(empEdit);
   const response = await $fetch("http://localhost:4000/employee/" + id, {
     method: "PATCH",
     body: sampleData,
   });
   getApi();
-  clearData();
+  // clearData();
 }
 // Delete API
 async function onDelete(id: number) {

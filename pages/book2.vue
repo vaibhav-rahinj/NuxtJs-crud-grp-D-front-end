@@ -242,6 +242,9 @@ let sampleBookData = {
 };
 let states = reactive({
   allBooks: [],
+
+  editBook: [],
+
   bookDetails: [],
 });
 getBookData();
@@ -282,6 +285,27 @@ async function createBookData() {
 }
 // PATCH API
 async function editBookData(bookId: string) {
+  //   states.editBook = await $fetch("http://localhost:3006/book/" + bookId);
+
+  // states.editBook
+  // let specificBook = [];
+  // let specificBook = await $fetch("http://localhost:3006/book/" + bookId);
+
+  // console.log("specific", specificBook);
+  // alert(specificBook.book_id);
+
+  //   let bookEdit =
+  // let bookEdit = states.editBook.filter((book) => {
+  //   if (book.book_id == bookId) {
+  //     sampleBookData.book_id = book.book_id;
+  //     sampleBookData.book_name = book.book_name;
+  //     sampleBookData.author = book.author;
+  //     sampleBookData.price = book.price;
+  //     sampleBookData.book_image = book.book_image;
+  //     sampleBookData.book_isbn = book.book_isbn;
+  //     return book;
+  //   }
+
   let bookEdit = states.allBooks.filter((book) => {
     if (book.book_id == bookId) {
       sampleBookData.book_id = book.book_id;
@@ -293,6 +317,8 @@ async function editBookData(bookId: string) {
       return book;
     }
   });
+
+  console.log("edit", bookEdit);
 
   console.log(bookEdit);
 
