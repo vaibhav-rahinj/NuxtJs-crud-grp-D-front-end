@@ -25,6 +25,12 @@
                 type="number"
                 placeholder="Enter Employee id"
               />
+              <!-- <span
+                v-for="error in v$.id.$e"
+                :key="error.$uid"
+                class="text-red-500"
+                >{{ error.$message }}</span
+              > -->
             </div>
             <div class="mb-6">
               <label
@@ -65,9 +71,12 @@
                 type="text"
                 placeholder="Enter Employee Last Name"
               />
-              <span v-for="error in v$.empLname.$errors" :key="error.$uid">
-                {{ error.$message }}
-              </span>
+              <span
+                v-for="error in v$.empLname.$errors"
+                :key="error.$uid"
+                class="text-red-500"
+                >{{ error.$message }}</span
+              >
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
               <div class="w-full px-3">
@@ -81,12 +90,15 @@
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="email"
                   name="emp_name"
-                  v-model="sampleData.emp_email"
+                  v-model="sampleData.email"
                   type="email"
                   placeholder="Enter Employee Email"
                 />
-                <span v-for="error in v$.email.$errors" :key="error.$uid">
-                  {{ error.$message }}</span
+                <span
+                  v-for="error in v$.email.$errors"
+                  :key="error.$uid"
+                  class="text-red-500"
+                  >{{ error.$message }}</span
                 >
               </div>
             </div>
@@ -103,14 +115,17 @@
                 name="emp_address"
                 placeholder="Address"
               />
-              <span v-for="error in v$.emp_address.$errors" :key="error.$uid">
-                {{ error.$message }}
-              </span>
+              <span
+                v-for="error in v$.emp_address.$errors"
+                :key="error.$uid"
+                class="text-red-500"
+                >{{ error.$message }}</span
+              >
             </div>
             <div id="hide">
               <button
                 class="py-1 px-5 mr-5 bg-blue-500 hover:bg-blue-700 text-white font-bold text-center rounded-md mb-3"
-                type="submit"
+                type="button"
                 @click="Submit()"
               >
                 Submit
@@ -146,7 +161,7 @@
               {{ item.empLname }}
             </td>
             <td class="px-4 border-black rounded-lg border-2">
-              {{ item.emp_email }}
+              {{ item.email }}
             </td>
 
             <td class="px-4 border-black rounded-lg border-2">
@@ -181,16 +196,26 @@ import useVuelidate, {
   email,
   minLength,
   maxLength,
+  helpers,
 } from "~/utils/vuelidate/useVuelidate";
 import { reactive, computed } from "vue";
-let sampleData = {
+
+const State = reactive({
+  select: true,
+  Submit: "submit",
+  allEmp: [],
+  employ: [],
+  id: "",
+  errorBack: {},
+});
+let sampleData = reactive({
   id: null,
   empFname: "",
   empLname: "",
-  emp_email: "",
+  email: "",
   emp_address: "",
-};
-const containsUser = (value) => {
+});
+const containsUser = (value: any) => {
   return value.includes("user");
 };
 
@@ -205,42 +230,40 @@ async function getApi() {
 }
 // POST API
 async function Submit() {
-  // event.preventDefault();
+  event.preventDefault();
   const result = await v$.value.$validate();
-  if (result) {
-    alert("success, form submited");
-  } else {
-    alert("erroe, form not submitted");
-  }
-
   await $fetch("http://localhost:4000/employee/", {
     method: "POST",
     body: sampleData,
   });
+  // event.preventDefault();
+  
 
   getApi();
+  clearData();
 }
 
 // PATCH API
 async function onEdit(id) {
+  // State.Submit = "Update";
   let empEdit = empp.allEmp.filter((employ) => {
     event.preventDefault();
     if (employ.id == id) {
       sampleData.id = employ.id;
       sampleData.empFname = employ.empFname;
       sampleData.empLname = employ.empLname;
-      sampleData.emp_email = employ.emp_email;
+      sampleData.email = employ.email;
       sampleData.emp_address = employ.emp_address;
-
       return employ;
     }
   });
-  console.log(empEdit);
+  // console.log(empEdit);
   const response = await $fetch("http://localhost:4000/employee/" + id, {
     method: "PATCH",
     body: sampleData,
   });
   getApi();
+  // clearData();
 }
 // Delete API
 async function onDelete(id: number) {
@@ -250,46 +273,29 @@ async function onDelete(id: number) {
   getApi();
 }
 
-const State = reactive({
-  form: {
-    empFname: "",
-    empLname: "",
-    email: "",
-    emp_address: "",
-  },
-});
-
-/**
- * validation rules
- */
 const rules = computed(() => {
   return {
-    empFname: { required, minLength: minLength(3) },
+    empFname: {
+      required,
+      minLength: minLength(3),
+      containsUser: helpers.withMessage("first name is required", containsUser),
+    },
     empLname: { required, minLength: minLength(3) },
     email: { required, email },
     emp_address: {
       required,
       minLength: minLength(3),
       maxLength: maxLength(30),
-      containsUser,
     },
   };
 });
-const v$ = useVuelidate(rules, State.form);
+const v$ = useVuelidate(rules, sampleData);
 
-/**
- * login
- *
- * @returns {Promise<void>}
- */
-async function login(): Promise<void> {
-  const isFormCorrect = await v$.value.$validate();
-  if (!isFormCorrect) {
-    // Show error messages
-    return;
-  }
-
-  const payload = { ...State.form };
-  // Call API with payload
+async function clearData() {
+  sampleData.id = "";
+  sampleData.empFname = "";
+  sampleData.empLname = "";
+  sampleData.email = "";
+  sampleData.emp_address = "";
 }
 </script>
