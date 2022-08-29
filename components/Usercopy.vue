@@ -1,18 +1,18 @@
 <template>
   <div>
-    <div class="grid gap-x-7 grid-cols-3 h-screen">
+    <div class="sm:grid gap-x-7 grid-cols-3 h-screen">
       <!-- <h1 class="p-4 bg-red-400 text-center font-bold font-serif text-xl">User Management</h1> -->
-      <div class="border-solid border-2">
-        <h1 id="title" class="text-center p-2 text-xl font-bold font-serif">
+      <div class="sm:border-solid border-2">
+        <h1 id="title" class="sm:text-center p-2 text-xl font-bold font-serif">
           Add New user
         </h1>
         <form
           class="sm:font-bold bg-slate-300 m-2 p-4 flex items-center justify-center"
         >
-          <table class="m-5 p-5">
+          <table class="sm:m-5 p-5">
             <!-- <tr> -->
-              <!-- <td><label>Id :</label></td> -->
-              <!-- <td>
+            <!-- <td><label>Id :</label></td> -->
+            <!-- <td>
                 <input
                   type="text"
                   v-model="state.myuser.User_Id"
@@ -27,9 +27,21 @@
                 <input
                   type="text"
                   v-model="state.myuser.User_Name"
+                  :v="v$.User_Name"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
                 <br />
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span
+                  v-for="error in v$.User_Name.$errors"
+                  :key="error.$uid"
+                  class="text-red-600 text-xs pl-4"
+                  >{{ error.$message }}</span
+                >
               </td>
             </tr>
             <tr>
@@ -38,8 +50,20 @@
                 <input
                   type="email"
                   v-model="state.myuser.Email"
+                  :v="v$.Email"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span
+                  v-for="error in v$.Email.$errors"
+                  :key="error.$uid"
+                  class="text-red-600 text-xs pl-4"
+                  >{{ error.$message }}</span
+                >
               </td>
             </tr>
             <tr>
@@ -48,8 +72,20 @@
                 <input
                   type="text"
                   v-model="state.myuser.Roles"
+                  :v="v$.Roles"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span
+                  v-for="error in v$.Roles.$errors"
+                  :key="error.$uid"
+                  class="text-red-600 text-xs pl-4"
+                  >{{ error.$message }}</span
+                >
               </td>
             </tr>
             <tr>
@@ -57,6 +93,7 @@
               <td>
                 <select
                   v-model="state.myuser.Gender"
+                  :v="v$.Gender"
                   class="font-bold sm:w-52 p-2 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 >
                   <option>Select</option>
@@ -65,12 +102,24 @@
                 </select>
               </td>
             </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span
+                  v-for="error in v$.Gender.$errors"
+                  :key="error.$uid"
+                  class="text-red-600 text-xs pl-4"
+                  >{{ error.$message }}</span
+                >
+              </td>
+            </tr>
             <!-- <tr>
             <td><label>Mobile No :</label></td>
             <td>
               <input
                 type="text"
                 v-model="myuser.Mobile"
+                 :v="v$.Mobile"
               placeholder="Mobile +91XXXXXXXXXX"
               required
                 class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-2 pr-2 ml-2 mb-2 w-52"
@@ -83,8 +132,20 @@
                 <input
                   type="text"
                   v-model="state.myuser.State"
+                  :v="v$.State"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span
+                  v-for="error in v$.State.$errors"
+                  :key="error.$uid"
+                  class="text-red-600 text-xs pl-4"
+                  >{{ error.$message }}</span
+                >
               </td>
             </tr>
             <tr>
@@ -93,8 +154,20 @@
                 <input
                   type="text"
                   v-model="state.myuser.Country"
+                  :v="v$.Country"
                   class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
                 />
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <span
+                  v-for="error in v$.Country.$errors"
+                  :key="error.$uid"
+                  class="text-red-600 text-xs pl-4"
+                  >{{ error.$message }}</span
+                >
               </td>
             </tr>
             <!-- <tr>
@@ -127,18 +200,23 @@
           </table>
           <br />
         </form>
+        <!-- <div class="font-serif">
+          <h2>Errors</h2>
+          <span v-for="error in v$.$errors" :key="error.$uid"
+            >{{ error.$property }}-{{ error.$message }}</span
+          >
+        </div> -->
       </div>
       <div
         class="border-solid border-2 overflow-x-auto relative w-full auto-cols-max col-span-2"
       >
-        <!-- <div class="sm:float-right p-2">
+        <div class="sm:float-right p-2">
           <input
             type="search"
-            @input="searchInput($event)"
             class="border text-black rounded-lg p-1 bg-gradient-to-r from-blue-200 to-blue-400 sm:rounded-full bg-white p-1"
             placeholder="Search"
           />
-        </div> -->
+        </div>
         <table
           class="sm:font-bold m-2 relative bg-slate-300 border w-full text-left"
         >
@@ -176,13 +254,13 @@
             <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
             <td colspan="2" class="sm:py-3 px-6">
               <button
-              @click="editFormValues(i)"
+                @click="editFormValues(i)"
                 class="sm:border rounded-lg p-1 bg-gradient-to-r from-blue-400 to-blue-900 text-white"
               >
                 Edit</button
               >&nbsp;
               <button
-              @click="deleteFormValues(user.User_Id)"
+                @click="deleteFormValues(user.User_Id)"
                 class="sm:border rounded-lg p-1 bg-gradient-to-r from-red-400 to-red-900 text-white"
               >
                 Delete
@@ -195,6 +273,18 @@
     </div>
   </div>
 </template>
+<script lang="ts">
+import { reactive, computed } from "vue";
+import useVuelidate, {
+  required,
+  email,
+  minLength,
+  alpha,
+} from "~/utils/vuelidate/useVuelidate";
+
+export default {};
+</script>
+
 <script setup lang="ts">
 let state = reactive({
   userarray: [],
@@ -212,6 +302,21 @@ let state = reactive({
   },
 });
 
+const rules = computed(() => {
+  return {
+    User_Name: { required, alpha, minLength: minLength(4) },
+    Email: { required, email },
+    Roles: { required, alpha },
+    Gender: { required },
+    // Mobile: '',
+    // Address: '',
+    State: { alpha },
+    Country: { alpha },
+  };
+});
+
+const v$ = useVuelidate(rules, state.myuser);
+
 var isEdit: boolean = false;
 getUserAPI();
 // Get API
@@ -220,36 +325,42 @@ async function getUserAPI() {
 }
 
 async function submitFormValues() {
-  const payload = state.myuser;
-  const userId = payload.User_Id;
-  delete payload.User_Id;
-  if (isEdit === true) {
-    console.log("hi");
-    await $fetch('http://localhost:4000/user/' + userId, {
-      method: "PUT",
-      body: JSON.stringify(payload),
-    });
-    isEdit = false;
+  const result = await v$.value.$validate();
+    const payload = state.myuser;
+    const userId = payload.User_Id;
+    delete payload.User_Id;
+    if (isEdit === true) {
+      // console.log("hi");
+      await $fetch("http://localhost:4000/user/" + userId, {
+        method: "PUT",
+        body: JSON.stringify(payload),
+      });
+      isEdit = false;
+      getUserAPI();
+    } else {
+      if (result) {
+      await $fetch("http://localhost:4000/user/", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+       getUserAPI();
+    state.myuser = {
+      User_Id: "",
+      User_Name: "",
+      Email: "",
+      Roles: "",
+      Gender: "",
+      // Mobile: '',
+      // Address: '',
+      State: "",
+      Country: "",
+      // User_img: "",
+    };
+    alert("Successfully data submitted");
   } else {
-    await $fetch("http://localhost:4000/user/", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
+    alert("Error data not submitted");
   }
-
-  getUserAPI();
-  state.myuser = {
-    User_Id: "",
-    User_Name: "",
-    Email: "",
-    Roles: "",
-    Gender: "",
-    // Mobile: '',
-    // Address: '',
-    State: "",
-    Country: "",
-    // User_img: "",
-  };
+    }
 }
 async function editFormValues(i) {
   console.log(i);
@@ -257,10 +368,11 @@ async function editFormValues(i) {
   isEdit = true;
 }
 async function deleteFormValues(index) {
-    console.log(index);
-    await $fetch('http://localhost:4000/user/' + index, {
-        method: 'DELETE'
-    });
-    getUserAPI();
+  console.log(index);
+  await $fetch("http://localhost:4000/user/" + index, {
+    method: "DELETE",
+  });
+  alert("Are you sure to Delete the record");
+  getUserAPI();
 }
 </script>
