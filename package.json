@@ -24,7 +24,7 @@
     "@vuelidate/validators": "^2.0.0-alpha.31",
     "axios": "^0.27.2",
     "cors": "^2.8.5",
-    "nuxt-validate": "^1.0.1",
+ "nuxt-validate": "^1.0.1",
     "vee-validate": "^4.6.6",
     "vue": "^3.2.37",
     "vue-multiselect": "^2.1.6",

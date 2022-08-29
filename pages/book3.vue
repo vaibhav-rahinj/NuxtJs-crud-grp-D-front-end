@@ -53,6 +53,11 @@
     </tr>
   </table> -->
   <hr class="border-3 border-blue-700" />
+  <div>
+    <button class="" type="button">
+      <NuxtLink to="/showdata">Show Data</NuxtLink>
+    </button>
+  </div>
   <!-- <ValidationProvider rules="required|alpha" v-slot="{ errors }">
     <input type="text" v-model="value" />
     <span>{{ errors[0] }}</span>
@@ -150,6 +155,49 @@
             >
               {{ error.$message }}
             </span>
+          </td>
+        </tr>
+
+        <!-- Book Category Section -->
+        <tr>
+          <td><label class="px-2" for="category">Book Category</label></td>
+          <td>
+            <!--  v-for="category in states.category"
+              :key="category.id" -->
+            <!-- v-model="backendCategory.categoryData" -->
+            <!-- v-model="backendCategory.categoryData" -->
+            <select name="category" id="category" multiple="true">
+              <!-- v-model="state.categoryCategoryId" -->
+              <!-- v-on:change="multipleSelect($event)" -->
+              <!-- @change="multipleSelect()" -->
+              <option value="" disabled>Select Category</option>
+              <!-- <span v-for="category in states.category" :key="category.id"> -->
+              <option
+                v-for="category in states.category"
+                :key="category.categoryId"
+                v-bind:value="category.categoryId"
+              >
+                <!-- @keyup="multipleSelect(category.categoryName)" -->
+                {{ category.categoryId }}) {{ category.categoryName }}
+              </option>
+              <!-- </span> -->
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <!-- {{ state.categoryCategoryId }} -->
+            <!-- {{ backEnd.catData }} -->
+            <!--  -->
+          </td>
+          <td>
+            <!-- <span
+              v-for="error in v$.author.$errors"
+              :key="error.$uid"
+              class="text-red-600 text-xs pl-4"
+            >
+              {{ error.$message }}
+            </span> -->
           </td>
         </tr>
 
@@ -300,36 +348,41 @@
   </div>
   <!-- <h2>{{ this.Book.dataShow() }}</h2> -->
   <hr class="border-4 border-red-600" />
-  <div
-    class="flex sm:w-auto md:w-auto w-fit sm:flex m5-5 md:flex justify-center mb-8 md:justify-center sm:justify-center"
-  >
-    <table
-      class="border-2 mt-5 sm:text-xs md:text-xs w-fit sm:w-fit md:w-auto p-2 text-center border-neutral-600"
+  <div class="h-1/4 overflow-scroll md:overflow-scroll overflow-y-scroll">
+    <div
+      class="flex overflow-scroll sm:w-auto md:w-auto w-fit sm:flex m5-5 md:flex justify-center mb-8 md:justify-center sm:justify-center"
     >
-      <tr>
-        <th class="border-2 border-neutral-600">Book ID</th>
-        <th class="border-2 border-neutral-600">Book Name</th>
-        <th class="border-2 border-neutral-600">Book Author</th>
-        <th class="border-2 border-neutral-600">Book Price</th>
-        <th class="border-2 border-neutral-600">Book Image</th>
-        <th class="border-2 border-neutral-600">Book ISBN</th>
-        <!-- <th></th> -->
-        <th colspan="3" class="border-2 border-neutral-600">Action</th>
-      </tr>
+      <table
+        class="border-2 mt-5 sm:text-xs md:text-xs w-fit sm:w-fit md:w-auto p-2 text-center border-neutral-600"
+      >
+        <tr>
+          <th class="border-2 border-neutral-600">Book ID</th>
+          <th class="border-2 border-neutral-600">Book Name</th>
+          <th class="border-2 border-neutral-600">Book Author</th>
+          <th class="border-2 border-neutral-600">Book Price</th>
+          <th class="border-2 border-neutral-600">Book Image</th>
+          <th class="border-2 border-neutral-600">Book ISBN</th>
+          <!-- <th class="border-2 border-neutral-600">Book Category Id</th> -->
+          <!-- <th></th> -->
+          <th colspan="3" class="border-2 border-neutral-600">Action</th>
+        </tr>
 
-      <!-- <tr v-for="book in dataBook" : key="book"> -->
-      <tr v-for="book in states.bookDetails" :key="book">
-        <!-- <tr v-for="book in state.allBooks" :key="book"> -->
-        <!-- <tr> -->
-        <td class="border-2 border-neutral-600">{{ book.book_id }}</td>
-        <td class="border-2 border-neutral-600">{{ book.book_name }}</td>
-        <td class="border-2 border-neutral-600">{{ book.author }}</td>
-        <td class="border-2 border-neutral-600">{{ book.price }}</td>
-        <td class="border-2 border-neutral-600">{{ book.book_image }}</td>
-        <td class="border-2 border-neutral-600">{{ book.book_isbn }}</td>
-        <!-- <td><button @click="edit(book.book_id)" type="button">Edit</button></td> -->
-        <td class="border-2 border-neutral-600">
-          <!-- <button
+        <!-- <tr v-for="book in dataBook" : key="book"> -->
+        <tr v-for="book in states.bookDetails" :key="book">
+          <!-- <tr v-for="book in state.allBooks" :key="book"> -->
+          <!-- <tr> -->
+          <td class="border-2 border-neutral-600">{{ book.book_id }}</td>
+          <td class="border-2 border-neutral-600">{{ book.book_name }}</td>
+          <td class="border-2 border-neutral-600">{{ book.author }}</td>
+          <td class="border-2 border-neutral-600">{{ book.price }}</td>
+          <td class="border-2 border-neutral-600">{{ book.book_image }}</td>
+          <td class="border-2 border-neutral-600">{{ book.book_isbn }}</td>
+          <!-- <td class="border-2 border-neutral-600">
+            {{ book.categoryCategoryId }}
+          </td> -->
+          <!-- <td><button @click="edit(book.book_id)" type="button">Edit</button></td> -->
+          <td class="border-2 border-neutral-600">
+            <!-- <button
             class="bg-green-600 hover:bg-green-800 px-2 p-1 rounded-xl text-white"
             @click="showBookImage(book.book_image)"
             type="button"
@@ -337,37 +390,38 @@
             View Image
           </button> -->
 
-          <button
-            class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
-          >
-            <a
-              :href="'http://localhost:3006/book/' + book.book_image"
-              target="_blank"
-              >View Image</a
+            <button
+              class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
             >
-          </button>
-        </td>
-        <td class="border-2 border-neutral-600">
-          <button
-            id="edit"
-            class="bg-green-600 hover:bg-green-800 px-2 p-1 rounded-xl text-white"
-            @click="editBookData(book.book_id)"
-            type="button"
-          >
-            Edit
-          </button>
-        </td>
-        <td class="border-2 border-neutral-600">
-          <button
-            class="bg-red-600 hover:bg-red-800 px-2 p-1 rounded-xl text-white"
-            @click="deleteBookData(book.book_id)"
-            type="button"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    </table>
+              <a
+                :href="'http://localhost:3006/book/' + book.book_image"
+                target="_blank"
+                >View Image</a
+              >
+            </button>
+          </td>
+          <td class="border-2 border-neutral-600">
+            <button
+              id="edit"
+              class="bg-green-600 hover:bg-green-800 px-2 p-1 rounded-xl text-white"
+              @click="editBookData(book.book_id)"
+              type="button"
+            >
+              Edit
+            </button>
+          </td>
+          <td class="border-2 border-neutral-600">
+            <button
+              class="bg-red-600 hover:bg-red-800 px-2 p-1 rounded-xl text-white"
+              @click="deleteBookData(book.book_id)"
+              type="button"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -387,25 +441,16 @@ import {
 // export default {
 //   setup() {
 const state = reactive({
-  //   check1: "",
-  //   name: "",
-  //   email: "",
-  //   contact: "",
   book_id: null,
   book_name: "",
   author: "",
+  //   categoryCategoryId: "",
   price: null,
   book_image: "",
   book_isbn: "",
-
-  //   emailAddress: ''
 });
+
 const rules = {
-  //   check1: { required, alpha },
-  //   emailAddress: { required, email }
-  //   name: { required, alpha },
-  //   email: { required, email },
-  //   contact: { required, numeric },
   book_id: { required, numeric },
   book_name: { required, alpha, minLength: minLength(3) },
   author: { required, alpha },
@@ -421,25 +466,14 @@ const rules = {
 
 const v$ = useVuelidate(rules, state);
 
-// async function checkRule(rule) {
-//   const result1 = await v$.value.$validate();
-
-//     if (result1) {
-//       alert("data is Correct");
-//     } else {
-//       alert("please enter correct info.");
-//     }
-// }
-
-// return { state, v$ };
-//   },
-// };
+// let categoryData = [];
 let errorCode;
 let check1;
 let isEdit = false;
 let sampleBook;
 let id;
 let errorId = false;
+let catData = [];
 // let sampleBookData = {
 //   book_id: null,
 //   book_name: "",
@@ -448,16 +482,36 @@ let errorId = false;
 //   book_image: "",
 //   book_isbn: "",
 // };
+let backendCategory = reactive({
+  bookCategory: [],
+  categoryData: [],
+});
+
 let backEnd = reactive({
   errorMsg: [],
+  catData: [],
 });
 let errorMsg;
 let states = reactive({
   allBooks: [],
   editBook: [],
   bookDetails: [],
+  category: [],
 });
+let dataCat1 = [];
 getBookData();
+
+// GET Category API
+async function getCategory() {
+  states.category = await $fetch("http://localhost:3006/category");
+  //   console.log(states.bookDetails);
+  console.log("category", states.category);
+  catData = states.category;
+
+  //   states.bookDetails = states.allBooks;
+}
+
+getCategory();
 
 // Calling Get API
 // function getBooks() {
@@ -466,28 +520,11 @@ getBookData();
 //   });
 // }
 
-// async function checkBookId() {
-//   const result1 = await v$.value.$validate();
-//   //   switch (errorCode) {
-//   //     case state.book_id:
-//   let show3 = v$.value.book_id.$errors.map((abc) => {
-//     console.log(abc);
-//     return abc;
-//   });
-//   console.log("error demo", show3);
-
-//   errorId = true;
-//   if (result1.valueOf()) {
-//     // alert("data is Correct");
-//   } else {
-//     alert("please enter correct book id.");
-//   }
-// }
-
 // GET API
 async function getBookData() {
   states.allBooks = await $fetch("http://localhost:3006/book");
-  console.log(states.bookDetails);
+  console.log("bookD", states.bookDetails);
+  console.log("states -> ", states);
 
   states.bookDetails = states.allBooks;
 }
@@ -499,6 +536,10 @@ async function createBookData() {
   const result1 = await v$.value.$validate();
   event.preventDefault();
   console.log(state);
+  //   console.log("selected category", backendCategory.categoryData);
+  console.log(" category", catData);
+
+  console.log("selected category ", backEnd.catData);
 
   if (result1) {
     if (isEdit != true) {
@@ -526,6 +567,7 @@ async function createBookData() {
         book_id: state.book_id,
         book_name: state.book_name,
         author: state.author,
+        // categoryCategoryId: state.categoryCategoryId,
         price: state.price,
         book_image: state.book_image,
         book_isbn: state.book_isbn,
@@ -556,7 +598,7 @@ async function createBookData() {
     //   resetForm();
     getBookData();
   } else {
-    alert("please enter correct book id.");
+    alert("please enter correct info.");
     return;
   }
 }
@@ -574,6 +616,7 @@ async function editBookData(bookId: string) {
   state.book_id = specificBook.book_id;
   state.book_name = specificBook.book_name;
   state.author = specificBook.author;
+  //   state.categoryCategoryId = specificBook.categoryCategoryId;
   state.price = specificBook.price;
   state.book_image = specificBook.book_image;
   state.book_isbn = specificBook.book_isbn;
@@ -631,11 +674,21 @@ async function getSpecificBook(check: string) {
       let bookPrice1 = check.toString();
       let bookPrice2 = bookID.price.toString();
 
+      let bookIsbn1 = check.toString();
+      let bookIsbn2 = bookID.book_isbn.toString();
+
+      //   if (
+      //     bookId2.startsWith(bookId1) ||
+      //     bookName2.startsWith(bookName1) ||
+      //     bookAuthor2.startsWith(bookAuthor1) ||
+      //     bookPrice2.startsWith(bookPrice1)
+      //   ) {
       if (
-        bookId2.startsWith(bookId1) ||
-        bookName2.startsWith(bookName1) ||
-        bookAuthor2.startsWith(bookAuthor1) ||
-        bookPrice2.startsWith(bookPrice1)
+        bookId2.includes(bookId1) ||
+        bookName2.includes(bookName1) ||
+        bookAuthor2.includes(bookAuthor1) ||
+        bookPrice2.includes(bookPrice1) ||
+        bookIsbn2.includes(bookIsbn1)
       ) {
         console.log(bookID);
         return bookID;
@@ -654,6 +707,7 @@ async function resetForm() {
   state.book_id = "";
   state.book_name = "";
   state.author = "";
+  //   state.categoryCategoryId = "";
   state.price = "";
   state.book_image = "";
   state.book_isbn = "";
