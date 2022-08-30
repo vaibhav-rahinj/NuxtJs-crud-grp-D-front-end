@@ -129,24 +129,17 @@
             <tr>
               <td><label>Exam Center :</label></td>
               <td>
-                <select 
-                  v-model="state.myuser.Exam_Center"
-                  multiple
+                <select
+                  v-model="state.Center_Id"
+                  multiple="true"
+                  @change="submitUserdataId(state.Center_Id)"
                   class="font-bold sm:w-52 p-2 rounded-md py-2 pr-4 ml-2 mb-2"
                 >
-                  <option value="PCCOE">PCCOE</option>
-                  <option value="SVPM COE">SVPM COE</option>
-                  <option value="ZCOE">ZCOE</option>
-                  <option value="JSPM COE">JSPM COE</option>
-                  <option value="RMD COE">RMD COE</option>
-                  <option value="KJ COE">KJ COE</option>
+                <option v-for="examC in state.exam" :key="examC.Center_Id" :value="examC.Center_Id">
+                {{examC.Center_Id}}{{examC.Exam_Center}}
+                </option>
                 </select>
-                <!-- <input
-                  type=""
-                  v-model="state.myuser.Exam_Center"
-                  :v="v$.Exam_Center"
-                  class="sm:w-52 p-2 rounded-lg bg-white border border-slate-300 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
-                /> -->
+                {{state.Center_Id}}
               </td>
             </tr>
             <tr>
@@ -254,7 +247,7 @@
             <th class="sm:py-3 px-6">Roles</th>
             <th class="sm:py-3 px-6">Gender</th>
             <!-- <th class="sm:py-3 px-6">Mobile</th> -->
-            <th class="sm:py-3 px-6">Exam_Center</th>
+            <!-- <th class="sm:py-3 px-6">Exam_Center</th> -->
             <th class="sm:py-3 px-6">State</th>
             <th class="sm:py-3 px-6">Country</th>
             <!-- <th class="sm:py-3 px-6">Profile Image</th> -->
@@ -275,7 +268,7 @@
             <td class="sm:py-3 px-6">{{ user.Roles }}</td>
             <td class="sm:py-3 px-6">{{ user.Gender }}</td>
             <!-- <td class="sm:py-3 px-6">{{ user.Mobile }}</td> -->
-            <td class="sm:py-3 px-6">{{ user.Exam_Center }}</td>
+            <!-- <td class="sm:py-3 px-6">{{ user.Exam_Center }}</td> -->
             <td class="sm:py-3 px-6">{{ user.State }}</td>
             <td class="sm:py-3 px-6">{{ user.Country }}</td>
             <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
@@ -308,7 +301,7 @@ import useVuelidate, {
   minLength,
   alpha,
 } from "~/utils/vuelidate/useVuelidate";
-import Multiselect from 'vue-multiselect'
+import Multiselect from "vue-multiselect";
 
 export default {};
 </script>
@@ -323,11 +316,13 @@ let state = reactive({
     Roles: "",
     Gender: "",
     // Mobile: '',
-    Exam_Center: "",
+    // Exam_Center: [],
     State: "",
     Country: "",
     // User_img: "",
   },
+  exam:[],
+  Center_Id:''
 });
 
 const rules = computed(() => {
@@ -337,7 +332,7 @@ const rules = computed(() => {
     Roles: { required, alpha },
     Gender: { required },
     // Mobile: '',
-    Exam_Center: { alpha },
+    // Exam_Center: { alpha },
     State: { alpha },
     Country: { alpha },
   };
@@ -352,13 +347,31 @@ async function getUserAPI() {
   state.userarray = await $fetch("http://localhost:4000/user/");
 }
 
+getExamAPI();
+// Get API for exam
+async function getExamAPI() {
+  state.exam = await $fetch("http://localhost:4000/exam");
+}
+
+async function submitUserdataId(id) {
+    console.log("dropdown click" + id);
+    await $fetch('http://localhost:4000/userdata', {
+        method: 'POST',
+        body: JSON.stringify(id)
+    });
+}
+
+// async function submitFormValues(){
+//   state.userarray.push(state.myuser);
+// }
+
 async function submitFormValues() {
   const result = await v$.value.$validate();
   const payload = state.myuser;
   const userId = payload.User_Id;
   delete payload.User_Id;
+
   if (isEdit === true) {
-    // console.log("hi");
     await $fetch("http://localhost:4000/user/" + userId, {
       method: "PUT",
       body: JSON.stringify(payload),
@@ -379,7 +392,7 @@ async function submitFormValues() {
         Roles: "",
         Gender: "",
         // Mobile: '',
-        Exam_Center: "",
+        // Exam_Center: [],
         State: "",
         Country: "",
         // User_img: "",
