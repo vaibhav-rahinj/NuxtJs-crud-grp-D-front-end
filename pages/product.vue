@@ -148,96 +148,96 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, mydata.product);
 
 getProductAPI();
-// GET API
-// async function getProductAPI() {
-//     //mydata.allProduct = await $fetch("http://localhost:8080/product/allData");
-// }
+GET API
+async function getProductAPI() {
+    mydata.allProduct = await $fetch("http://localhost:3001/product/allData");
+}
 
-// async function onFormSubmit1() {
-//     try {
-//         console.log(mydata.product);
-//         const result = await v$.value.$validate();
-//         if (result) {
-//             alert("product created");
-//         } else {
-//             alert("product not created");
-//         }
-//         await $fetch("http://localhost:8080/product", {
-//             method: "POST",
-//             body: JSON.stringify(mydata.product),
-//         });
-//         console.log("hiii amit");
-//     } catch (err) {
-//         // document.write();
-//         console.log({
-//             statusCode: 404,
-//             message: "User not found",
-//         });
-//     }
-//     getProductAPI();
-// }
-// async function onFormSubmit1() {
-//   const result = await v$.value.$validate();
-//   if (isEdit === true) {
-//     await $fetch("http://localhost:8080/product/" + id,  {
-//       method: "PUT",
-//       body: mydata.Book,
-//     });
-//     isEdit = false;
-//     getBookAPI();
-//   } else {
-//     if (result) {
-//       await $fetch("http://localhost:8080/product", {
-//         method: "POST",
-//         body: mydata.Book,
-//       });
-//       getUserApi();
-//     }
-//   }
-// // PATCH API
-// let edit = mydata.product;
-// async function onClickOfEditProduct(id) {
-//   const sampleData = {
-//     id: id,
-//     productName: "Shaktiman" + id,
-//     price: "ankita" + mydata.allProduct.length,
-//     stock: 200 + mydata.allProduct.length,
-//     size: "ghjgj" + mydata.allProduct.length,
-//     image: "91001" + mydata.allProduct.length,
-//   };
-// const response = await $fetch('http://localhost:8080/product/' + id, {
-//     method: 'PATCH',
-//     body: JSON.stringify(sampleData),
-// });
-// getBookAPI();
-//   getProductAPI();
-// }
-// async function editProduct(id) {
-//     console.log("top console from patch api");
-//     let productEdit = mydata.allProduct.filter((product) => {
-//         if ((product.id = id)) {
-//             mydata.product.id = product.id;
-//             mydata.product.productName = product.productName;
-//             mydata.product.price = product.price;
-//             mydata.product.stock = product.stock;
-//             mydata.product.size = product.size;
-//             return product;
-//             console.log("patch api");
-//         }
-//     });
-//     console.log(productEdit);
-//     const response = await $fetch("http://localhost:8080/product/" + id, {
-//         method: "PATCH",
-//         body: JSON.stringify(mydata.product),
-//     });
-//     getProductAPI();
-// }
-// getProductAPI();
-// // // Delete API
-// async function onDeleteOfProduct(id) {
-//     await $fetch("http://localhost:8080/product/" + id, {
-//         method: "DELETE",
-//     });
-//     getProductAPI();
-// }
+async function onFormSubmit1() {
+    try {
+        console.log(mydata.product);
+        const result = await v$.value.$validate();
+        if (result) {
+            alert("product created");
+        } else {
+            alert("product not created");
+        }
+        await $fetch("http://localhost:3001/product", {
+            method: "POST",
+            body: JSON.stringify(mydata.product),
+        });
+        console.log("hiii amit");
+    } catch (err) {
+        // document.write();
+        console.log({
+            statusCode: 404,
+            message: "User not found",
+        });
+    }
+    getProductAPI();
+}
+async function onFormSubmit1() {
+  const result = await v$.value.$validate();
+  if (isEdit === true) {
+    await $fetch("http://localhost:3001/product/" + id,  {
+      method: "PUT",
+      body: mydata.Book,
+    });
+    isEdit = false;
+    getBookAPI();
+  } else {
+    if (result) {
+      await $fetch("http://localhost:3001/product", {
+        method: "POST",
+        body: mydata.Book,
+      });
+      getUserApi();
+    }
+  }
+// PATCH API
+let edit = mydata.product;
+async function onClickOfEditProduct(id) {
+  const sampleData = {
+    id: id,
+    productName: "Shaktiman" + id,
+    price: "ankita" + mydata.allProduct.length,
+    stock: 200 + mydata.allProduct.length,
+    size: "ghjgj" + mydata.allProduct.length,
+    image: "91001" + mydata.allProduct.length,
+  };
+const response = await $fetch('http://localhost:3001/product/' + id, {
+    method: 'PATCH',
+    body: JSON.stringify(sampleData),
+});
+getBookAPI();
+  getProductAPI();
+}
+async function editProduct(id) {
+    console.log("top console from patch api");
+    let productEdit = mydata.allProduct.filter((product) => {
+        if ((product.id = id)) {
+            mydata.product.id = product.id;
+            mydata.product.productName = product.productName;
+            mydata.product.price = product.price;
+            mydata.product.stock = product.stock;
+            mydata.product.size = product.size;
+            return product;
+            console.log("patch api");
+        }
+    });
+    console.log(productEdit);
+    const response = await $fetch("http://localhost:3001/product/" + id, {
+        method: "PATCH",
+        body: JSON.stringify(mydata.product),
+    });
+    getProductAPI();
+}
+getProductAPI();
+// // Delete API
+async function onDeleteOfProduct(id) {
+    await $fetch("http://localhost:3001/product/" + id, {
+        method: "DELETE",
+    });
+    getProductAPI();
+}
 </script>
