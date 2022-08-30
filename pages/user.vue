@@ -33,3 +33,6 @@ let dataarray:Array<Object>= [
     }
 </script> -->
 
+<template>
+  <Usercopy></Usercopy>
+</template>
