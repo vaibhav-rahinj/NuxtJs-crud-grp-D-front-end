@@ -94,7 +94,7 @@
                 <select
                   v-model="state.myuser.Gender"
                   :v="v$.Gender"
-                  class="font-bold sm:w-52 p-2 rounded-md py-2 pl-9 pr-4 ml-2 mb-2"
+                  class="font-bold sm:w-52 p-2 rounded-md py-2 pr-4 ml-2 mb-2"
                 >
                   <option>Select</option>
                   <option>Female</option>
@@ -126,6 +126,26 @@
               />
             </td>
           </tr> -->
+            <tr>
+              <td><label>Exam Center :</label></td>
+              <td>
+                <select
+                  v-model="state.Center_Id"
+                  multiple="true"
+                  @change="submitUserdataId(state.Center_Id)"
+                  class="font-bold sm:w-52 p-2 rounded-md py-2 pr-4 ml-2 mb-2"
+                >
+                <option v-for="examC in state.exam" :key="examC.Center_Id" :value="examC.Center_Id">
+                {{examC.Center_Id}}{{examC.Exam_Center}}
+                </option>
+                </select>
+                {{state.Center_Id}}
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+            </tr>
+
             <tr>
               <td><label>State :</label></td>
               <td>
@@ -227,7 +247,7 @@
             <th class="sm:py-3 px-6">Roles</th>
             <th class="sm:py-3 px-6">Gender</th>
             <!-- <th class="sm:py-3 px-6">Mobile</th> -->
-            <!-- <th class="sm:py-3 px-6">Address</th> -->
+            <!-- <th class="sm:py-3 px-6">Exam_Center</th> -->
             <th class="sm:py-3 px-6">State</th>
             <th class="sm:py-3 px-6">Country</th>
             <!-- <th class="sm:py-3 px-6">Profile Image</th> -->
@@ -248,7 +268,7 @@
             <td class="sm:py-3 px-6">{{ user.Roles }}</td>
             <td class="sm:py-3 px-6">{{ user.Gender }}</td>
             <!-- <td class="sm:py-3 px-6">{{ user.Mobile }}</td> -->
-            <!-- <td class="sm:py-3 px-6">{{ user.Address }}</td> -->
+            <!-- <td class="sm:py-3 px-6">{{ user.Exam_Center }}</td> -->
             <td class="sm:py-3 px-6">{{ user.State }}</td>
             <td class="sm:py-3 px-6">{{ user.Country }}</td>
             <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
@@ -281,6 +301,7 @@ import useVuelidate, {
   minLength,
   alpha,
 } from "~/utils/vuelidate/useVuelidate";
+import Multiselect from "vue-multiselect";
 
 export default {};
 </script>
@@ -295,11 +316,13 @@ let state = reactive({
     Roles: "",
     Gender: "",
     // Mobile: '',
-    // Address: '',
+    // Exam_Center: [],
     State: "",
     Country: "",
     // User_img: "",
   },
+  exam:[],
+  Center_Id:''
 });
 
 const rules = computed(() => {
@@ -309,7 +332,7 @@ const rules = computed(() => {
     Roles: { required, alpha },
     Gender: { required },
     // Mobile: '',
-    // Address: '',
+    // Exam_Center: { alpha },
     State: { alpha },
     Country: { alpha },
   };
@@ -324,43 +347,61 @@ async function getUserAPI() {
   state.userarray = await $fetch("http://localhost:4000/user/");
 }
 
+getExamAPI();
+// Get API for exam
+async function getExamAPI() {
+  state.exam = await $fetch("http://localhost:4000/exam");
+}
+
+async function submitUserdataId(id) {
+    console.log("dropdown click" + id);
+    await $fetch('http://localhost:4000/userdata', {
+        method: 'POST',
+        body: JSON.stringify(id)
+    });
+}
+
+// async function submitFormValues(){
+//   state.userarray.push(state.myuser);
+// }
+
 async function submitFormValues() {
   const result = await v$.value.$validate();
-    const payload = state.myuser;
-    const userId = payload.User_Id;
-    delete payload.User_Id;
-    if (isEdit === true) {
-      // console.log("hi");
-      await $fetch("http://localhost:4000/user/" + userId, {
-        method: "PUT",
-        body: JSON.stringify(payload),
-      });
-      isEdit = false;
-      getUserAPI();
-    } else {
-      if (result) {
+  const payload = state.myuser;
+  const userId = payload.User_Id;
+  delete payload.User_Id;
+
+  if (isEdit === true) {
+    await $fetch("http://localhost:4000/user/" + userId, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+    isEdit = false;
+    getUserAPI();
+  } else {
+    if (result) {
       await $fetch("http://localhost:4000/user/", {
         method: "POST",
         body: JSON.stringify(payload),
       });
-       getUserAPI();
-    state.myuser = {
-      User_Id: "",
-      User_Name: "",
-      Email: "",
-      Roles: "",
-      Gender: "",
-      // Mobile: '',
-      // Address: '',
-      State: "",
-      Country: "",
-      // User_img: "",
-    };
-    alert("Successfully data submitted");
-  } else {
-    alert("Error data not submitted");
-  }
+      getUserAPI();
+      state.myuser = {
+        User_Id: "",
+        User_Name: "",
+        Email: "",
+        Roles: "",
+        Gender: "",
+        // Mobile: '',
+        // Exam_Center: [],
+        State: "",
+        Country: "",
+        // User_img: "",
+      };
+      alert("Successfully data submitted");
+    } else {
+      alert("Error data not submitted");
     }
+  }
 }
 async function editFormValues(i) {
   console.log(i);
