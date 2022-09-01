@@ -112,14 +112,63 @@
         </div>
         <p>
             {{ mydata.product.statusCode }}
+<<<<<<< HEAD
             </p>
 
+=======
+            <!-- </div> -->
+            <!-- <p>{{ allProduct }}</p> -->
+        </p>
+        <p>{{ message }}</p>
+>>>>>>> 4f2b98a59564dc68c772ef214ed7ae0e14b5c320
     </div>
 </template>
 <script setup lang="ts">
+//////////////////////////////////////////////validation//////////////////////////////////////
+//import useVuelidate, { required, email } from "~/utils/vuelidate/useVuelidate";
+//import useVuelidate, { required, email } from "../utils/vuelidate/useVuelidate";
 import useVuelidate from "@vuelidate/core";
 import { maxLength, minLength, required } from "@vuelidate/validators";
-
+// const state = reactive({
+//   form: {
+//     productName: "",
+//     password: "",
+//   },
+// });
+// /**
+//  * validation rules
+//  */
+// const rules = {
+//   productName: { required },
+//   //password: { required },
+// };
+// const v$ = useVuelidate(rules, state.form);
+// /**
+//  * login
+//  *
+//  * @returns {Promise<void>}
+//  */
+// async function login(): Promise<void> {
+//   const isFormCorrect = await v$.value.$validate();
+//   if (!isFormCorrect) {
+//     // Show error messages
+//     alert("valid valid FirstName");
+//     console.log("please enter data in valid formate");
+//     return;
+//   }
+//   //     const payload = { ...state.form };
+//   // Call API with payload
+// }
+//////////////////////////////////////////////////////////////////////////////////////////////
+// import { ref } from "vue";
+// const productName = ref("");
+// const price = ref("");
+// const stock = ref("");
+// const size = ref("");
+// const emp_contact = ref("");
+// const emp_salary = ref("");
+// const emp_dept = ref("");
+// const productName =
 const mydata = reactive({
     allProduct: [],
     product: {
@@ -127,9 +176,18 @@ const mydata = reactive({
         price: "",
         stock: "",
         size: "",
+        // emp_contact: '',
+        // emp_salary: '',
+        // emp_dept: '',
     },
 });
-
+// const rules = {
+//   productName: { required },
+//   price: { required },
+//   stock: { required },
+//   size: { required },
+//   //   //password: { required },
+// };
 const rules = computed(() => {
     return {
         productName: {
@@ -141,15 +199,49 @@ const rules = computed(() => {
         stock: { required },
         size: { required },
     };
+    //   //password: { required },
 });
 const v$ = useVuelidate(rules, mydata.product);
-
+//const v$ = useVuelidate(rules, mydata.product );
+/**
+ * login
+ *
+ *
+//  */
+// async function login(): Promise<void> {
+//   const isFormCorrect = await v$.value.$validate();
+//   if (!isFormCorrect) {
+//     // Show error messages
+//     alert("valid valid FirstName");
+//     console.log("please enter data in valid formate");
+//     return;
+//   }
+//     const payload = { ...state.form };
+// Call API with payload
+// }
+// const a = async () => {
+//   const result = await v$.validate;
+// };
 getProductAPI();
-GET API
+// GET API
 async function getProductAPI() {
-    mydata.allProduct = await $fetch("http://localhost:3001/product/allData");
+    mydata.allProduct = await $fetch("http://localhost:4000/product/allData");
 }
-
+//POST API
+// async function onFormSubmit1() {
+//   console.log(mydata.product);
+//   const result = await v$.value.$validate();
+//   if (result) {
+//     alert("product created");
+//   } else {
+//     alert("product not created");
+//   }
+//   await $fetch("http://localhost:8080/product", {
+//     method: "POST",
+//     body: JSON.stringify(mydata.product),
+//   });
+//   getProductAPI();
+// }
 async function onFormSubmit1() {
     try {
         console.log(mydata.product);
@@ -159,7 +251,7 @@ async function onFormSubmit1() {
         } else {
             alert("product not created");
         }
-        await $fetch("http://localhost:3001/product", {
+        await $fetch("http://localhost:4000/product/create", {
             method: "POST",
             body: JSON.stringify(mydata.product),
         });
@@ -173,42 +265,42 @@ async function onFormSubmit1() {
     }
     getProductAPI();
 }
-async function onFormSubmit1() {
-  const result = await v$.value.$validate();
-  if (isEdit === true) {
-    await $fetch("http://localhost:3001/product/" + id,  {
-      method: "PUT",
-      body: mydata.Book,
-    });
-    isEdit = false;
-    getBookAPI();
-  } else {
-    if (result) {
-      await $fetch("http://localhost:3001/product", {
-        method: "POST",
-        body: mydata.Book,
-      });
-      getUserApi();
-    }
-  }
-// PATCH API
-let edit = mydata.product;
-async function onClickOfEditProduct(id) {
-  const sampleData = {
-    id: id,
-    productName: "Shaktiman" + id,
-    price: "ankita" + mydata.allProduct.length,
-    stock: 200 + mydata.allProduct.length,
-    size: "ghjgj" + mydata.allProduct.length,
-    image: "91001" + mydata.allProduct.length,
-  };
-const response = await $fetch('http://localhost:3001/product/' + id, {
-    method: 'PATCH',
-    body: JSON.stringify(sampleData),
-});
-getBookAPI();
-  getProductAPI();
-}
+// async function onFormSubmit1() {
+//   const result = await v$.value.$validate();
+//   if (isEdit === true) {
+//     await $fetch("http://localhost:8080/product/" + id,  {
+//       method: "PUT",
+//       body: mydata.Book,
+//     });
+//     isEdit = false;
+//     getBookAPI();
+//   } else {
+//     if (result) {
+//       await $fetch("http://localhost:8080/product", {
+//         method: "POST",
+//         body: mydata.Book,
+//       });
+//       getUserApi();
+//     }
+//   }
+// // PATCH API
+// let edit = mydata.product;
+// async function onClickOfEditProduct(id) {
+//   const sampleData = {
+//     id: id,
+//     productName: "Shaktiman" + id,
+//     price: "ankita" + mydata.allProduct.length,
+//     stock: 200 + mydata.allProduct.length,
+//     size: "ghjgj" + mydata.allProduct.length,
+//     image: "91001" + mydata.allProduct.length,
+//   };
+// const response = await $fetch('http://localhost:8080/product/' + id, {
+//     method: 'PATCH',
+//     body: JSON.stringify(sampleData),
+// });
+// getBookAPI();
+//   getProductAPI();
+// }
 async function editProduct(id) {
     console.log("top console from patch api");
     let productEdit = mydata.allProduct.filter((product) => {
@@ -223,7 +315,7 @@ async function editProduct(id) {
         }
     });
     console.log(productEdit);
-    const response = await $fetch("http://localhost:3001/product/" + id, {
+    const response = await $fetch("http://localhost:4000/product/" + id, {
         method: "PATCH",
         body: JSON.stringify(mydata.product),
     });
@@ -232,9 +324,11 @@ async function editProduct(id) {
 getProductAPI();
 // // Delete API
 async function onDeleteOfProduct(id) {
-    await $fetch("http://localhost:3001/product/" + id, {
+    await $fetch("http://localhost:4000/product/" + id, {
         method: "DELETE",
     });
     getProductAPI();
 }
-</script> -->
+
+</script>
+
