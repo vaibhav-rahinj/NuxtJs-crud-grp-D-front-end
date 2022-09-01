@@ -1,5 +1,5 @@
-<!-- <template>
-    <div>
+<template>
+  <!--  <div>
         <h1 class="font-bold text-center text-2xl mt-10 text-green-400">
             Product Management
         </h1>
@@ -112,16 +112,14 @@
         </div>
         <p>
             {{ mydata.product.statusCode }}
-<<<<<<< HEAD
+
             </p>
 
-=======
-            <!-- </div> -->
-            <!-- <p>{{ allProduct }}</p> -->
-        </p>
+ </div> -->
+  <!-- <p>{{ allProduct }}</p> -->
+  <!-- </p>
         <p>{{ message }}</p>
->>>>>>> 4f2b98a59564dc68c772ef214ed7ae0e14b5c320
-    </div>
+    </div> -->
 </template>
 <script setup lang="ts">
 //////////////////////////////////////////////validation//////////////////////////////////////
@@ -170,16 +168,16 @@ import { maxLength, minLength, required } from "@vuelidate/validators";
 // const emp_dept = ref("");
 // const productName =
 const mydata = reactive({
-    allProduct: [],
-    product: {
-        productName: "",
-        price: "",
-        stock: "",
-        size: "",
-        // emp_contact: '',
-        // emp_salary: '',
-        // emp_dept: '',
-    },
+  allProduct: [],
+  product: {
+    productName: "",
+    price: "",
+    stock: "",
+    size: "",
+    // emp_contact: '',
+    // emp_salary: '',
+    // emp_dept: '',
+  },
 });
 // const rules = {
 //   productName: { required },
@@ -189,17 +187,17 @@ const mydata = reactive({
 //   //   //password: { required },
 // };
 const rules = computed(() => {
-    return {
-        productName: {
-            required,
-            minLenght: minLength(5),
-            maxLength: maxLength(15),
-        },
-        price: { required, maxLength: maxLength(9) },
-        stock: { required },
-        size: { required },
-    };
-    //   //password: { required },
+  return {
+    productName: {
+      required,
+      minLenght: minLength(5),
+      maxLength: maxLength(15),
+    },
+    price: { required, maxLength: maxLength(9) },
+    stock: { required },
+    size: { required },
+  };
+  //   //password: { required },
 });
 const v$ = useVuelidate(rules, mydata.product);
 //const v$ = useVuelidate(rules, mydata.product );
@@ -225,7 +223,7 @@ const v$ = useVuelidate(rules, mydata.product);
 getProductAPI();
 // GET API
 async function getProductAPI() {
-    mydata.allProduct = await $fetch("http://localhost:4000/product/allData");
+  mydata.allProduct = await $fetch("http://localhost:4000/product/allData");
 }
 //POST API
 // async function onFormSubmit1() {
@@ -243,27 +241,27 @@ async function getProductAPI() {
 //   getProductAPI();
 // }
 async function onFormSubmit1() {
-    try {
-        console.log(mydata.product);
-        const result = await v$.value.$validate();
-        if (result) {
-            alert("product created");
-        } else {
-            alert("product not created");
-        }
-        await $fetch("http://localhost:4000/product/create", {
-            method: "POST",
-            body: JSON.stringify(mydata.product),
-        });
-        console.log("hiii amit");
-    } catch (err) {
-        // document.write();
-        console.log({
-            statusCode: 404,
-            message: "User not found",
-        });
+  try {
+    console.log(mydata.product);
+    const result = await v$.value.$validate();
+    if (result) {
+      alert("product created");
+    } else {
+      alert("product not created");
     }
-    getProductAPI();
+    await $fetch("http://localhost:4000/product/create", {
+      method: "POST",
+      body: JSON.stringify(mydata.product),
+    });
+    console.log("hiii amit");
+  } catch (err) {
+    // document.write();
+    console.log({
+      statusCode: 404,
+      message: "User not found",
+    });
+  }
+  getProductAPI();
 }
 // async function onFormSubmit1() {
 //   const result = await v$.value.$validate();
@@ -302,33 +300,31 @@ async function onFormSubmit1() {
 //   getProductAPI();
 // }
 async function editProduct(id) {
-    console.log("top console from patch api");
-    let productEdit = mydata.allProduct.filter((product) => {
-        if ((product.id = id)) {
-            mydata.product.id = product.id;
-            mydata.product.productName = product.productName;
-            mydata.product.price = product.price;
-            mydata.product.stock = product.stock;
-            mydata.product.size = product.size;
-            return product;
-            console.log("patch api");
-        }
-    });
-    console.log(productEdit);
-    const response = await $fetch("http://localhost:4000/product/" + id, {
-        method: "PATCH",
-        body: JSON.stringify(mydata.product),
-    });
-    getProductAPI();
+  console.log("top console from patch api");
+  let productEdit = mydata.allProduct.filter((product) => {
+    if ((product.id = id)) {
+    //   mydata.product.id = product.id;
+      mydata.product.productName = product.productName;
+      mydata.product.price = product.price;
+      mydata.product.stock = product.stock;
+      mydata.product.size = product.size;
+      return product;
+      console.log("patch api");
+    }
+  });
+  console.log(productEdit);
+  const response = await $fetch("http://localhost:4000/product/" + id, {
+    method: "PATCH",
+    body: JSON.stringify(mydata.product),
+  });
+  getProductAPI();
 }
 getProductAPI();
 // // Delete API
 async function onDeleteOfProduct(id) {
-    await $fetch("http://localhost:4000/product/" + id, {
-        method: "DELETE",
-    });
-    getProductAPI();
+  await $fetch("http://localhost:4000/product/" + id, {
+    method: "DELETE",
+  });
+  getProductAPI();
 }
-
 </script>
-
