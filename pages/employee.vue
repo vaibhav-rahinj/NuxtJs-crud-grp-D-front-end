@@ -2,7 +2,7 @@
   <div>
     <main class="flex justify-center w-full h-screen">
       <div>
-        <h1>This is emloyee CRUD</h1>
+        <!-- <h1>This is emloyee CRUD</h1> -->
         <form
           method="post"
           class="bg-gray-100 border-black rounded-lg border-2 px-12"
@@ -91,7 +91,7 @@
                   id="email"
                   name="emp_name"
                   v-model="sampleData.email"
-                  type="email"
+                  type="text"
                   placeholder="Enter Employee Email"
                 />
                 <span
@@ -101,6 +101,23 @@
                   >{{ error.$message }}</span
                 >
               </div>
+            </div>
+
+            <div>
+              <!-- <label for="language">Select Department:</label> -->
+              <select
+                name="language"
+                id="language"
+                v-model="sdata.depName"
+                multiple
+              >
+                <input type="text" v-model="sdata.depName" />
+                <option value="">select dep</option>
+                <option value="Hr">Hr</option>
+                <option value="manager">IT</option>
+                <option value="">Engineer</option>
+                <option value="Indigo">Finance</option>
+              </select>
             </div>
 
             <div class="rounded mb-4 shadow appearance-none label-floating">
@@ -131,6 +148,13 @@
                 Submit
               </button>
               <button
+                class="py-1 px-5 mr-5 bg-blue-500 hover:bg-blue-700 text-white font-bold text-center rounded-md mb-3"
+                type="button"
+                @click="Dep()"
+              >
+                Dep
+              </button>
+              <button
                 class="py-1 px-5 bg-blue-500 hover:bg-blue-700 text-white font-bold text-center rounded-md mb-3"
                 type="reset"
               >
@@ -148,8 +172,10 @@
             <th class="px-4 border-black rounded-lg border-2">Last Name</th>
             <th class="px-4 border-black rounded-lg border-2">Email</th>
             <th class="px-4 border-black rounded-lg border-2">Address</th>
+            <!-- <th class="px-4 border-black rounded-lg border-2">Department</th> -->
             <th class="px-4 border-black rounded-lg border-2">Action</th>
           </tr>
+          <label v-for="(item, index) of dep.allDep" :key="item.dep_id"></label>
           <tr v-for="(item, index) of empp.allEmp" :key="item.id">
             <td class="px-4 border-black rounded-lg border-2">
               {{ item.id }}
@@ -167,6 +193,9 @@
             <td class="px-4 border-black rounded-lg border-2">
               {{ item.emp_address }}
             </td>
+            <!-- <td class="px-4 border-black rounded-lg border-2">
+              {{ item.depName }}
+            </td> -->
 
             <td class="px-4 border-black rounded-lg border-2">
               {{ item.Action }}
@@ -184,6 +213,7 @@
               </button>
             </td>
           </tr>
+          <!-- </tr> -->
         </table>
       </div>
     </main>
@@ -191,12 +221,14 @@
 </template>
 
 <script setup lang="ts">
+// console.log(item);
 import useVuelidate, {
   required,
   email,
   minLength,
   maxLength,
   helpers,
+  alpha,
 } from "~/utils/vuelidate/useVuelidate";
 import { reactive, computed } from "vue";
 
@@ -204,6 +236,7 @@ const State = reactive({
   select: true,
   Submit: "submit",
   allEmp: [],
+  allDep: [],
   employ: [],
   id: "",
   errorBack: {},
@@ -215,18 +248,27 @@ let sampleData = reactive({
   email: "",
   emp_address: "",
 });
-const containsUser = (value: any) => {
-  return value.includes("user");
-};
+let sdata = reactive({
+  id: null,
+  depName: "",
+  post: "",
+});
+// const containsUser = (value: any) => {
+//   return value.includes("user");
+// };
 
 const empp = reactive({
   allEmp: [],
+});
+const dep = reactive({
+  allDep: [],
 });
 
 getApi();
 
 async function getApi() {
   empp.allEmp = await $fetch("http://localhost:4000/employee/");
+  dep.allDep = await $fetch("http://localhost:4000/department/");
 }
 // POST API
 async function Submit() {
@@ -237,15 +279,28 @@ async function Submit() {
     body: sampleData,
   });
   // event.preventDefault();
-  
+  console.error();
 
-  getApi();
   clearData();
+  getApi();
+}
+
+async function Dep() {
+  event.preventDefault();
+  // const result = await v$.value.$validate();
+  await $fetch("http://localhost:4000/department/", {
+    method: "POST",
+    body: sdata,
+  });
+  // event.preventDefault();
+  console.error();
+
+  clearData();
+  getApi();
 }
 
 // PATCH API
 async function onEdit(id) {
-  // State.Submit = "Update";
   let empEdit = empp.allEmp.filter((employ) => {
     event.preventDefault();
     if (employ.id == id) {
@@ -261,6 +316,10 @@ async function onEdit(id) {
   const response = await $fetch("http://localhost:4000/employee/" + id, {
     method: "PATCH",
     body: sampleData,
+  });
+  const depresponce = await $fetch("http://localhost:4000/department/" + id, {
+    method: "PATCH",
+    body: sdata,
   });
   getApi();
   // clearData();
@@ -278,14 +337,16 @@ const rules = computed(() => {
     empFname: {
       required,
       minLength: minLength(3),
-      containsUser: helpers.withMessage("first name is required", containsUser),
+      alpha,
+      // containsUser: helpers.withMessage("first name is required", containsUser),
     },
-    empLname: { required, minLength: minLength(3) },
+    empLname: { required, minLength: minLength(3), alpha },
     email: { required, email },
     emp_address: {
       required,
       minLength: minLength(3),
       maxLength: maxLength(30),
+      alpha,
     },
   };
 });
