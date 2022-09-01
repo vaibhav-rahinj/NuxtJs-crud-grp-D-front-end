@@ -37,7 +37,6 @@
             />
           </td>
         </tr>
-
         <tr>
           <td><label class="px-2" for="author">Book Author</label></td>
           <td>
@@ -68,7 +67,6 @@
             />
           </td>
         </tr>
-
         <tr>
           <td><label class="px-2" for="book_image">Book Image</label></td>
           <td>
@@ -83,7 +81,6 @@
             />
           </td>
         </tr>
-
         <tr>
           <td>
             <!-- <button
@@ -144,7 +141,6 @@
     </form>
   </div>
   <hr class="border-4 border-red-600" />
-
   <div class="flex justify-center">
     <input
       type="text"
@@ -174,7 +170,6 @@
         <!-- <th></th> -->
         <th colspan="3" class="border-2 border-neutral-600">Action</th>
       </tr>
-
       <!-- <tr v-for="book in dataBook" : key="book"> -->
       <tr v-for="book in states.bookDetails" :key="book">
         <!-- <tr v-for="book in state.allBooks" :key="book"> -->
@@ -194,7 +189,6 @@
           >
             View Image
           </button> -->
-
           <button
             class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
           >
@@ -228,72 +222,58 @@
     </table>
   </div>
 </template>
-
 <script setup lang="ts">
 let check1;
-
 let sampleBookData = {
   book_id: null,
-  book_name: "",
-  author: "",
+  book_name: '',
+  author: '',
   price: null,
-  book_image: "",
-  book_isbn: "",
+  book_image: '',
+  book_isbn: '',
 };
 let states = reactive({
   allBooks: [],
-
   editBook: [],
-
   bookDetails: [],
 });
 getBookData();
-
 // Calling Get API
 // function getBooks() {
 //   getBookData().then((data: any) => {
 //     state.allBooks = data;
 //   });
 // }
-
 // GET API
 async function getBookData() {
-  states.allBooks = await $fetch("http://localhost:3006/book");
+  states.allBooks = await $fetch('http://localhost:3006/book');
   console.log(states.bookDetails);
-
   states.bookDetails = states.allBooks;
 }
-
 getBookData();
-
 // // POST API
 async function createBookData() {
   event.preventDefault();
   console.log(sampleBookData);
-
-  let response = await $fetch("http://localhost:3006/book", {
-    method: "POST",
+  let response = await $fetch('http://localhost:3006/book', {
+    method: 'POST',
     body: sampleBookData,
   });
   // let result = await response.json();
   let result = await response;
   // alert(result.message);
   console.log(result);
-
-  alert("Book added");
+  alert('Book added');
   getBookData();
 }
 // PATCH API
 async function editBookData(bookId: string) {
   //   states.editBook = await $fetch("http://localhost:3006/book/" + bookId);
-
   // states.editBook
   // let specificBook = [];
   // let specificBook = await $fetch("http://localhost:3006/book/" + bookId);
-
   // console.log("specific", specificBook);
   // alert(specificBook.book_id);
-
   //   let bookEdit =
   // let bookEdit = states.editBook.filter((book) => {
   //   if (book.book_id == bookId) {
@@ -305,7 +285,6 @@ async function editBookData(bookId: string) {
   //     sampleBookData.book_isbn = book.book_isbn;
   //     return book;
   //   }
-
   let bookEdit = states.allBooks.filter((book) => {
     if (book.book_id == bookId) {
       sampleBookData.book_id = book.book_id;
@@ -317,43 +296,34 @@ async function editBookData(bookId: string) {
       return book;
     }
   });
-
-  console.log("edit", bookEdit);
-
+  console.log('edit', bookEdit);
   console.log(bookEdit);
-
-  const response = await $fetch("http://localhost:3006/book/patch/" + bookId, {
-    method: "PATCH",
+  const response = await $fetch('http://localhost:3006/book/patch/' + bookId, {
+    method: 'PATCH',
     body: JSON.stringify(sampleBookData),
   });
   getBookData();
 }
 // Delete API
 async function deleteBookData(bookId: string) {
-  await $fetch("http://localhost:3006/book/" + bookId, {
-    method: "DELETE",
+  await $fetch('http://localhost:3006/book/' + bookId, {
+    method: 'DELETE',
   });
   getBookData();
 }
-
 async function getSpecificBook(check: string) {
-  console.log("abc");
+  console.log('abc');
   if (check != null) {
     states.bookDetails = states.allBooks.filter((bookID) => {
       let bookId1 = check.toString();
       let bookId2 = bookID.book_id.toString();
-
       console.log(bookId1);
-
       let bookName1 = check.toLocaleLowerCase();
       let bookName2 = bookID.book_name.toLocaleLowerCase();
-
       let bookAuthor1 = check.toLocaleLowerCase();
       let bookAuthor2 = bookID.author.toLocaleLowerCase();
-
       let bookPrice1 = check.toString();
       let bookPrice2 = bookID.price.toString();
-
       if (
         bookId2.startsWith(bookId1) ||
         bookName2.startsWith(bookName1) ||
@@ -365,20 +335,18 @@ async function getSpecificBook(check: string) {
       }
     });
   }
-  if (check == "") {
+  if (check == '') {
     states.bookDetails = states.allBooks;
   }
 }
-
 // reset form
 async function resetForm() {
-  sampleBookData.book_id = "";
-  sampleBookData.book_name = "";
-  sampleBookData.author = "";
-  sampleBookData.price = "";
-  sampleBookData.book_image = "";
-  sampleBookData.book_isbn = "";
-
+  sampleBookData.book_id = '';
+  sampleBookData.book_name = '';
+  sampleBookData.author = '';
+  sampleBookData.price = '';
+  sampleBookData.book_image = '';
+  sampleBookData.book_isbn = '';
   //   this.indexOfEdit = -1;
   //   this.isEdit = false;
 }
