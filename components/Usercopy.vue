@@ -135,11 +135,15 @@
                   @change="submitUserdataId(state.Center_Id)"
                   class="font-bold sm:w-52 p-2 rounded-md py-2 pr-4 ml-2 mb-2"
                 >
-                <option v-for="examC in state.exam" :key="examC.Center_Id" :value="examC.Center_Id">
-                {{examC.Center_Id}}{{examC.Exam_Center}}
-                </option>
+                  <option
+                    v-for="examC in state.exam"
+                    :key="examC.Center_Id"
+                    :value="examC.Center_Id"
+                  >
+                    {{ examC.Center_Id }}{{ examC.Exam_Center }}
+                  </option>
                 </select>
-                {{state.Center_Id}}
+                {{ state.Center_Id }}
               </td>
             </tr>
             <tr>
@@ -250,6 +254,7 @@
             <!-- <th class="sm:py-3 px-6">Exam_Center</th> -->
             <th class="sm:py-3 px-6">State</th>
             <th class="sm:py-3 px-6">Country</th>
+            <th class="sm:py-3 px-6">Center Id</th>
             <!-- <th class="sm:py-3 px-6">Profile Image</th> -->
             <th class="sm:py-3 px-6">Action</th>
           </tr>
@@ -271,6 +276,7 @@
             <!-- <td class="sm:py-3 px-6">{{ user.Exam_Center }}</td> -->
             <td class="sm:py-3 px-6">{{ user.State }}</td>
             <td class="sm:py-3 px-6">{{ user.Country }}</td>
+            <th class="sm:py-3 px-6">{{ state.Center_Id }}</th>
             <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
             <td colspan="2" class="sm:py-3 px-6">
               <button
@@ -315,14 +321,12 @@ let state = reactive({
     Email: "",
     Roles: "",
     Gender: "",
-    // Mobile: '',
-    // Exam_Center: [],
     State: "",
     Country: "",
     // User_img: "",
   },
   exam:[],
-  Center_Id:''
+  Center_Id:[]
 });
 
 const rules = computed(() => {
@@ -341,6 +345,7 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, state.myuser);
 
 var isEdit: boolean = false;
+var usersId: number;
 getUserAPI();
 // Get API
 async function getUserAPI() {
@@ -365,6 +370,21 @@ async function submitUserdataId(id) {
 //   state.userarray.push(state.myuser);
 // }
 
+async function editFormValues(i) {
+  console.log(i);
+  state.myuser = Object.assign({}, state.userarray[i]);
+  isEdit = true;
+}
+
+async function deleteFormValues(index) {
+  console.log(index);
+  await $fetch("http://localhost:4000/user/" + index, {
+    method: "DELETE",
+  });
+  alert("Are you sure to Delete the record");
+  getUserAPI();
+}
+
 async function submitFormValues() {
   const result = await v$.value.$validate();
   const payload = state.myuser;
@@ -380,10 +400,36 @@ async function submitFormValues() {
     getUserAPI();
   } else {
     if (result) {
-      await $fetch("http://localhost:4000/user/", {
+      alert("Successfully data submitted");
+    } else {
+      alert("Error data not submitted");
+    }
+    await $fetch("http://localhost:4000/user/", {
         method: "POST",
         body: JSON.stringify(payload),
-      });
+      }).then((res) => {
+            console.log("id", res.User_Id);
+            usersId = res.User_Id;
+            userExam();
+        })
+
+    async function userExam() {
+        console.log("UserId", usersId);
+        console.log(state.Center_Id);
+        state.Center_Id.forEach((centerid) => {
+            const obj = {
+                User: usersId,
+                Center: centerid
+            }
+            var response = $fetch('http://localhost:4000/user/userdata', {
+                method: 'POST',
+                body: JSON.stringify(obj)
+            }).then((res) => {
+                console.log("data", obj);
+            })
+        })
+    }
+
       getUserAPI();
       state.myuser = {
         User_Id: "",
@@ -391,29 +437,10 @@ async function submitFormValues() {
         Email: "",
         Roles: "",
         Gender: "",
-        // Mobile: '',
-        // Exam_Center: [],
         State: "",
         Country: "",
         // User_img: "",
-      };
-      alert("Successfully data submitted");
-    } else {
-      alert("Error data not submitted");
-    }
+      }
   }
-}
-async function editFormValues(i) {
-  console.log(i);
-  state.myuser = Object.assign({}, state.userarray[i]);
-  isEdit = true;
-}
-async function deleteFormValues(index) {
-  console.log(index);
-  await $fetch("http://localhost:4000/user/" + index, {
-    method: "DELETE",
-  });
-  alert("Are you sure to Delete the record");
-  getUserAPI();
 }
 </script>

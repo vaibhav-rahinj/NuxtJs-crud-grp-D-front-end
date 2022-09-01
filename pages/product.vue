@@ -1,11 +1,11 @@
-<template>
+<!-- <template>
     <div>
         <h1 class="font-bold text-center text-2xl mt-10 text-green-400">
             Product Management
         </h1>
-        <!-- <div class="grid grid-cols-2"> -->
+         <div class="grid grid-cols-2"> 
         <div class="border-black border-2 m-8 p-8">
-            <!-- @submit="onFormSubmit1()" -->
+            @submit="onFormSubmit1()" 
             <form @submit.prevent="onFormSubmit1()" class="bg-green-100 border-green-400 rounded-lg border-2 px-12">
                 <table>
                     <h2 class="text-teal-900 text-xl font-bold pt-6">“Add Product”</h2>
@@ -13,12 +13,12 @@
                     <label class="pt-10 py-10" for="ProductName">Product Name:</label><br />
                     <input v-model="mydata.product.productName" type="text" ref="productName" id="ProductName"
                         name="ProductName" placeholder="" />
-                    <!-- <span
+                    <span
             v-for="error in v$.productName.$errors"
             :key="error.$uid"
             class="text-red-700"
             >{{ error.$messages }}</span
-          > -->
+          > 
                     <span v-for="error in v$.productName.$errors" :key="error.$uid" class="text-red-600">{{
                             error.$message
                     }}
@@ -38,7 +38,7 @@
                     </span><br /><br />
                     <label for="Size">Size:</label>
                     <select v-model="mydata.product.size" class="p-1" name="Size" id="Size" ref="size">
-                        <!-- <option value="XS">XS</option> -->
+                         <option value="XS">XS</option> 
                         <option value="S">S</option>
                         <option value="M" selected>M</option>
                         <option value="L">L</option>
@@ -54,7 +54,7 @@
                             type="submit">
                             Add Product
                         </button>
-                        <!-- \@click="onFormSubmit1()" -->
+            
                         <button
                             class="py-1 px-5 bg-black hover:bg-blue-400 text-white font-bold text-center rounded-md mb-3"
                             type="reset">
@@ -68,7 +68,7 @@
         <div class="border-black border-2 m-8 p-8">
             <table class="list">
                 <tr>
-                    <!-- <th class="px-4 border-black rounded-lg border-2">id</th> -->
+                    
                     <th class="px-4 border-green-400 rounded-lg border-4">ProductId</th>
                     <th class="px-4 border-green-400 rounded-lg border-4">ProductName</th>
                     <th class="px-4 border-green-400 rounded-lg border-4">Price</th>
@@ -78,7 +78,6 @@
                     <th class="px-4 border-green-400 rounded-lg border-4">Action</th>
                 </tr>
                 <tr v-for="item in mydata.allProduct" :key="item.id">
-                    <!-- <td class="px-4 border-black rounded-lg border-2">{{item.id=i+1}}</td> -->
                     <td class="px-4 border-green-400 rounded-lg border-4">
                         {{ item.id }}
                     </td>
@@ -113,10 +112,8 @@
         </div>
         <p>
             {{ mydata.product.statusCode }}
-            <!-- </div> -->
-            <!-- <p>{{ allProduct }}</p> -->
-        </p>
-        <!-- <p>{{ message }}</p> -->
+            </p>
+
     </div>
 </template>
 <script setup lang="ts">
@@ -240,4 +237,4 @@ async function onDeleteOfProduct(id) {
     });
     getProductAPI();
 }
-</script>
+</script> -->
