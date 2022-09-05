@@ -7,7 +7,7 @@
           Add New user
         </h1>
         <div>
-          <ul v-for="error in state.errormsg" :key="error">
+          <ul style="list-style-type:disc" v-for="error in state.errormsg" :key="error" class="text-red-600 text-xs pl-4 font-serif">
             <li>{{error}}</li>
           </ul>
         </div>
