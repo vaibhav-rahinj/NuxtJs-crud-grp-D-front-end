@@ -5,53 +5,12 @@
     </h1>
   </div>
   <div>
-    Errors :
+    Backend Errors :
     <span class="text-red-600" v-for="err in backEnd.errorMsg" :key="err">
-      {{ err }}
+      <p>{{ err }}</p>
     </span>
   </div>
-  <!-- <hr class="border-3 border-blue-700" /> -->
-  <!-- <div>
-    <h1 class="text-red-600">Errors</h1> -->
-  <!-- <h2 v-for="error in v$.$errors" :key="v$.uid">
-      {{ error.$property }}- {{ error.$message }}
-    </h2> -->
-  <!-- </div> -->
-  <!-- <table>
-    <tr>
-      <td><label>Name</label></td>
-      <td>
-        <input type="text" v-model="state.name" /><br />
-        <span v-for="error in v$.name.$errors" :key="error.$uid">
-          {{ error.$message }}
-        </span>
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>email</td>
-      <td><input type="email" v-model="state.email" /></td>
-      <td>
-        <span v-for="error in v$.email.$errors" :key="error.$uid">
-          {{ error.$message }}
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td>Number</td>
-      <td><input type="number" v-model="state.contact" /></td>
-      <td>
-        <span v-for="error in v$.contact.$errors" :key="error.$uid">
-          {{ error.$message }}
-        </span>
-      </td>
-    </tr>
-    <tr>
-      <td><button @click="checkRule">Check</button></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </table> -->
+
   <hr class="border-3 border-blue-700" />
   <div>
     <button class="" type="button">
@@ -162,14 +121,11 @@
         <tr>
           <td><label class="px-2" for="category">Book Category</label></td>
           <td>
-            <!--  v-for="category in states.category"
-              :key="category.id" -->
-            <!-- v-model="backendCategory.categoryData" -->
-            <!-- v-model="backendCategory.categoryData" -->
+            <!-- v-model="dropDown.catData" -->
             <select
               name="category"
               id="category"
-              v-model="dropDown.catData"
+              v-model="state.categories"
               multiple="true"
             >
               <option value="" disabled>Select Category</option>
@@ -189,7 +145,8 @@
         <tr>
           <td>
             <!-- {{ state.categoryCategoryId }} -->
-            {{ dropDown.catData }}
+            <!-- {{ dropDown.catData }} -->
+            {{ state.categories }}
             <!--  -->
           </td>
           <td>
@@ -364,7 +321,7 @@
           <th class="border-2 border-neutral-600">Book Price</th>
           <th class="border-2 border-neutral-600">Book Image</th>
           <th class="border-2 border-neutral-600">Book ISBN</th>
-          <!-- <th class="border-2 border-neutral-600">Book Category Id</th> -->
+          <th class="border-2 border-neutral-600">Book Category</th>
           <!-- <th></th> -->
           <th colspan="3" class="border-2 border-neutral-600">Action</th>
         </tr>
@@ -379,9 +336,11 @@
           <td class="border-2 border-neutral-600">{{ book.price }}</td>
           <td class="border-2 border-neutral-600">{{ book.book_image }}</td>
           <td class="border-2 border-neutral-600">{{ book.book_isbn }}</td>
-          <!-- <td class="border-2 border-neutral-600">
-            {{ book.categoryCategoryId }}
-          </td> -->
+          <td class="border-2 border-neutral-600">
+            <p v-for="cat in book.categories" :key="cat.id">
+              "{{ cat.categoryName }}"
+            </p>
+          </td>
           <!-- <td><button @click="edit(book.book_id)" type="button">Edit</button></td> -->
           <td class="border-2 border-neutral-600">
             <!-- <button
@@ -446,10 +405,13 @@ const state = reactive({
   book_id: null,
   book_name: "",
   author: "",
-  //   categoryCategoryId: "",
   price: null,
   book_image: "",
   book_isbn: "",
+  categories: [],
+});
+const demo = reactive({
+  book_category1: [],
 });
 
 const rules = {
@@ -560,29 +522,66 @@ async function createBookData() {
   //   console.log("selected category", backendCategory.categoryData);
   console.log(" category", catData);
 
-  console.log("selected category ", dropDown.catData);
+  // console.log("selected category ", dropDown.catData);
+  console.log("selected category ", state.categories);
+  // let temp = "";
+  // state.book_category.map((d) => {
+  //   temp = temp + d + ",";
+  //   demo.book_category1.push(d);
+  // });
+  // dropDown.catData = temp;
+  // console.log("array in string - ", temp);
+  // state.book_category = temp;
+
+  // console.log("second insertion ", demo4);
+
+  let demo2 = {
+    book_id: state.book_id,
+    book_name: state.book_name,
+    author: state.author,
+    price: state.price,
+    book_image: state.book_image,
+    book_isbn: state.book_isbn,
+    // categories: demo4,
+  };
 
   if (result1) {
     if (isEdit != true) {
       let response = await $fetch("http://localhost:3006/book", {
         method: "POST",
-        body: state,
+        body: demo2,
       })
         .then((res) => {
           console.log("res", res);
           console.log("res ID- > ", res.book_id);
-
+          console.log("Book added successfully.");
           //   book_ID = state.book_id;
           book_ID = res.book_id;
-          console.log("bookID-> ", book_ID);
+          // console.log("bookID-> ", book_ID);
+          // let demo4 = [];
+          // let demo3 = state.categories.map((ele) => {
+          //   console.log("second call", ele.categoryId);
+          //   let abc = {
+          //     book: book_ID,
+          //     category: ele,
+          //   };
+          //   demo4.push(abc);
+          // });
 
-          alert("Book added successfully.");
-          relationTable();
+          // console.log("second insertion ", demo4);
+
+          // let response7 = $fetch("http://localhost:3006/book/bookcat", {
+          //   method: "POST",
+          //   body: demo4,
+          // });
+
+          // relationTable();
           resetForm();
         })
         .catch((err) => {
           console.error("error", err.message, err.error);
-          errorMsg = err.message;
+          errorMsg = err.data.message;
+          console.log("errorMsg", errorMsg);
         });
       // let result = await response.json();
       let result = await response;
@@ -595,10 +594,10 @@ async function createBookData() {
         book_id: state.book_id,
         book_name: state.book_name,
         author: state.author,
-        // categoryCategoryId: state.categoryCategoryId,
         price: state.price,
         book_image: state.book_image,
         book_isbn: state.book_isbn,
+        book_category: state.categories,
       };
 
       const responseEdit = await $fetch(
@@ -617,7 +616,8 @@ async function createBookData() {
         })
         .catch((err) => {
           console.error("error", err);
-          backEnd.errorMsg.push(err.message);
+          backEnd.errorMsg = err.data.message;
+          // push(err.message);
         });
       isEdit = false;
     }
@@ -634,42 +634,45 @@ async function createBookData() {
 // Third Table API
 // http://localhost:3006/book/bookcat
 
-async function relationTable() {
-  // http://localhost:3006/book/bookcat;
-  console.log("in relation id ", book_ID);
+// async function relationTable() {
+//   // http://localhost:3006/book/bookcat;
+//   console.log("in relation id ", book_ID);
 
-  dropDown.catData.forEach((e) => {
-    relation1 = {
-      // id: book_ID,
-      book: book_ID,
-      category: e,
-    };
-    console.log("relation  ", relation1);
+//   // dropDown.catData.map((e) => {
+//   // demo.book_category1.map((e) => {
+//   state.book_category.map((e) => {
+//     relation1 = {
+//       // id: book_ID,
+//       book: book_ID,
+//       category: e,
+//     };
+//     console.log("relation  ", relation1);
 
-    let response3 = $fetch("http://localhost:3006/book/bookcat", {
-      method: "POST",
-      body: relation1,
-    })
-      .then((res) => {
-        console.log("res", e + "--" + res);
-        console.log("response", response3);
+//     let response3 = $fetch("http://localhost:3006/book/bookcat", {
+//       method: "POST",
+//       body: relation1,
+//     })
+//       .then((res) => {
+//         console.log("res", e + "--" + res);
+//         console.log("response", response3);
 
-        //   console.log("res ID- > ", res.book_id);
+//         //   console.log("res ID- > ", res.book_id);
 
-        //   book_ID = state.book_id;
-        console.log("bookID-> ", book_ID);
-      })
-      .catch((err) => {
-        console.error("error", err.message, err.error);
-        errorMsg = err.message;
-      });
-  });
+//         //   book_ID = state.book_id;
+//         console.log("bookID-> ", book_ID);
+//       })
+//       .catch((err) => {
+//         console.error("error", err.message, err.error);
+//         errorMsg = err.message;
+//       });
+//   });
 
-  // let result = await response.json();
-  //   let result = await response;
-  //   alert(result.message);
-  //   console.log("result", result);
-}
+//   // let result = await response.json();
+//   //   let result = await response;
+//   //   alert(result.message);
+//   //   console.log("result", result);
+//   getBookData();
+// }
 
 // PATCH API
 async function editBookData(bookId: string) {
@@ -677,6 +680,8 @@ async function editBookData(bookId: string) {
   id = bookId;
   // states.editBook
   // let specificBook = [];
+  // let categoryData = await $fetch("http://localhost:3006/book/bookcat");
+
   let specificBook = await $fetch("http://localhost:3006/book/" + bookId);
 
   console.log("specific", specificBook);
