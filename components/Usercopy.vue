@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="sm:grid gap-x-7 grid-cols-3 h-screen">
-      <!-- <h1 class="p-4 bg-red-400 text-center font-bold font-serif text-xl">User Management</h1> -->
       <div class="sm:border-solid border-2">
         <h1 id="title" class="sm:text-center p-2 text-xl font-bold font-serif">
           Add New user
@@ -216,25 +215,11 @@
                 >
                   Add User</button
                 >&nbsp;
-                <!-- <button
-                  id="btnadd"
-                  type="button"
-                  @click="resetTodata()"
-                  class="sm:border rounded-lg p-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-pink-500 hover:to-yellow-500 text-white"
-                >
-                  Reset
-                </button> -->
               </td>
             </tr>
           </table>
           <br />
         </form>
-        <!-- <div class="font-serif">
-          <h2>Errors</h2>
-          <span v-for="error in v$.$errors" :key="error.$uid"
-            >{{ error.$property }}-{{ error.$message }}</span
-          >
-        </div> -->
       </div>
       <div
         class="border-solid border-2 overflow-x-auto relative w-full auto-cols-max col-span-2"
@@ -256,11 +241,8 @@
             <th class="sm:py-3 px-6">Email</th>
             <th class="sm:py-3 px-6">Roles</th>
             <th class="sm:py-3 px-6">Gender</th>
-            <!-- <th class="sm:py-3 px-6">Mobile</th> -->
-            <!-- <th class="sm:py-3 px-6">Exam_Center</th> -->
             <th class="sm:py-3 px-6">State</th>
             <th class="sm:py-3 px-6">Country</th>
-            <!-- <th class="sm:py-3 px-6">Center Id</th> -->
             <!-- <th class="sm:py-3 px-6">Profile Image</th> -->
             <th class="sm:py-3 px-6">Action</th>
           </tr>
@@ -278,11 +260,8 @@
             </td>
             <td class="sm:py-3 px-6">{{ user.Roles }}</td>
             <td class="sm:py-3 px-6">{{ user.Gender }}</td>
-            <!-- <td class="sm:py-3 px-6">{{ user.Mobile }}</td> -->
-            <!-- <td class="sm:py-3 px-6">{{ user.Exam_Center }}</td> -->
             <td class="sm:py-3 px-6">{{ user.State }}</td>
             <td class="sm:py-3 px-6">{{ user.Country }}</td>
-            <!-- <th class="sm:py-3 px-6">{{ state.Center_Id }}</th> -->
             <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
             <td colspan="2" class="sm:py-3 px-6">
               <button
@@ -300,7 +279,6 @@
             </td>
           </tr>
         </table>
-        <!-- {{ count[0] }} -->
       </div>
     </div>
   </div>
@@ -345,8 +323,6 @@ const rules = computed(() => {
     Email: { required, email },
     Roles: { required, alpha },
     Gender: { required },
-    // Mobile: '',
-    // Exam_Center: { alpha },
     State: { alpha },
     Country: { alpha },
   };
@@ -392,7 +368,6 @@ async function editFormValues(i) {
 }
 
 async function deleteFormValues(index) {
-  // console.log(index);
   await $fetch("http://localhost:4000/user/" + index, {
     method: "DELETE",
   });
