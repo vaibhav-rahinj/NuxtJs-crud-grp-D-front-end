@@ -6,6 +6,11 @@
         <h1 id="title" class="sm:text-center p-2 text-xl font-bold font-serif">
           Add New user
         </h1>
+        <div>
+          <ul v-for="error in state.errormsg" :key="error">
+            <li>{{error}}</li>
+          </ul>
+        </div>
         <form
           class="sm:font-bold bg-slate-300 m-2 p-4 flex items-center justify-center"
         >
@@ -237,6 +242,7 @@
         <div class="sm:float-right p-2">
           <input
             type="search"
+            @input="searchInput($event)"
             class="border text-black rounded-lg p-1 bg-gradient-to-r from-blue-200 to-blue-400 sm:rounded-full bg-white p-1"
             placeholder="Search"
           />
@@ -254,7 +260,7 @@
             <!-- <th class="sm:py-3 px-6">Exam_Center</th> -->
             <th class="sm:py-3 px-6">State</th>
             <th class="sm:py-3 px-6">Country</th>
-            <th class="sm:py-3 px-6">Center Id</th>
+            <!-- <th class="sm:py-3 px-6">Center Id</th> -->
             <!-- <th class="sm:py-3 px-6">Profile Image</th> -->
             <th class="sm:py-3 px-6">Action</th>
           </tr>
@@ -276,7 +282,7 @@
             <!-- <td class="sm:py-3 px-6">{{ user.Exam_Center }}</td> -->
             <td class="sm:py-3 px-6">{{ user.State }}</td>
             <td class="sm:py-3 px-6">{{ user.Country }}</td>
-            <th class="sm:py-3 px-6">{{ state.Center_Id }}</th>
+            <!-- <th class="sm:py-3 px-6">{{ state.Center_Id }}</th> -->
             <!-- <td class="sm:py-3 px-6">{{ user.User_img }}</td> -->
             <td colspan="2" class="sm:py-3 px-6">
               <button
@@ -315,6 +321,7 @@ export default {};
 <script setup lang="ts">
 let state = reactive({
   userarray: [],
+  errormsg:[],
   myuser: {
     User_Id: null,
     User_Name: "",
@@ -325,9 +332,12 @@ let state = reactive({
     Country: "",
     // User_img: "",
   },
-  exam:[],
-  Center_Id:[]
+  exam: [],
+  Center_Id: [],
+  filterTableRecord:[],
 });
+var  searchByName = "";
+let input = ref("");
 
 const rules = computed(() => {
   return {
@@ -346,10 +356,15 @@ const v$ = useVuelidate(rules, state.myuser);
 
 var isEdit: boolean = false;
 var usersId: number;
+
 getUserAPI();
 // Get API
 async function getUserAPI() {
-  state.userarray = await $fetch("http://localhost:4000/user/");
+  //-------for get---------
+  // state.userarray = await $fetch("http://localhost:4000/user/");
+  //-------for filter search reacord--------
+  state.filterTableRecord = await $fetch("http://localhost:4000/user/");
+  state.userarray = state.filterTableRecord;
 }
 
 getExamAPI();
@@ -359,11 +374,11 @@ async function getExamAPI() {
 }
 
 async function submitUserdataId(id) {
-    console.log("dropdown click" + id);
-    await $fetch('http://localhost:4000/userdata', {
-        method: 'POST',
-        body: JSON.stringify(id)
-    });
+  console.log("dropdown click" + id);
+  await $fetch("http://localhost:4000/userdata", {
+    method: "POST",
+    body: JSON.stringify(id),
+  });
 }
 
 // async function submitFormValues(){
@@ -377,12 +392,28 @@ async function editFormValues(i) {
 }
 
 async function deleteFormValues(index) {
-  console.log(index);
+  // console.log(index);
   await $fetch("http://localhost:4000/user/" + index, {
     method: "DELETE",
   });
   alert("Are you sure to Delete the record");
   getUserAPI();
+}
+
+function filterRecords(searchByName) {
+  if ( searchByName) {
+    var searching = state.userarray.filter((user) =>
+      user.User_Name.toLowerCase().includes( searchByName.toLowerCase())
+    );
+    state.userarray = searching;
+  } else{
+    state.userarray = state.filterTableRecord;
+  }
+}
+
+function searchInput(e) {
+  searchByName = e.target.value;
+  filterRecords(searchByName)
 }
 
 async function submitFormValues() {
@@ -405,42 +436,43 @@ async function submitFormValues() {
       alert("Error data not submitted");
     }
     await $fetch("http://localhost:4000/user/", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      }).then((res) => {
-            console.log("id", res.User_Id);
-            usersId = res.User_Id;
-            userExam();
-        })
+      method: "POST",
+      body: JSON.stringify(payload),
+    }).then((res) => {
+      // console.log("id", res.User_Id);
+      usersId = res.User_Id;
+      userExam();
+    }).catch(error=>{state.errormsg=error.data.message
+    console.log(state.errormsg)})
 
     async function userExam() {
-        console.log("UserId", usersId);
-        console.log(state.Center_Id);
-        state.Center_Id.forEach((centerid) => {
-            const obj = {
-                User: usersId,
-                Center: centerid
-            }
-            var response = $fetch('http://localhost:4000/user/userdata', {
-                method: 'POST',
-                body: JSON.stringify(obj)
-            }).then((res) => {
-                console.log("data", obj);
-            })
-        })
+      console.log("UserId", usersId);
+      console.log(state.Center_Id);
+      state.Center_Id.forEach((centerid) => {
+        const obj = {
+          User: usersId,
+          Center: centerid,
+        };
+        var response = $fetch("http://localhost:4000/user/userdata", {
+          method: "POST",
+          body: JSON.stringify(obj),
+        }).then((res) => {
+          console.log("data", obj);
+        });
+      });
     }
 
-      getUserAPI();
-      state.myuser = {
-        User_Id: "",
-        User_Name: "",
-        Email: "",
-        Roles: "",
-        Gender: "",
-        State: "",
-        Country: "",
-        // User_img: "",
-      }
+    getUserAPI();
+    state.myuser = {
+      User_Id: "",
+      User_Name: "",
+      Email: "",
+      Roles: "",
+      Gender: "",
+      State: "",
+      Country: "",
+      // User_img: "",
+    };
   }
 }
 </script>

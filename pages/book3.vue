@@ -166,14 +166,12 @@
               :key="category.id" -->
             <!-- v-model="backendCategory.categoryData" -->
             <!-- v-model="backendCategory.categoryData" -->
-            <select
-              name="category"
-              id="category"
-              v-model="dropDown.catData"
-              multiple="true"
-            >
+            <select name="category" id="category" multiple="true">
+              <!-- v-model="state.categoryCategoryId" -->
+              <!-- v-on:change="multipleSelect($event)" -->
+              <!-- @change="multipleSelect()" -->
               <option value="" disabled>Select Category</option>
-
+              <!-- <span v-for="category in states.category" :key="category.id"> -->
               <option
                 v-for="category in states.category"
                 :key="category.categoryId"
@@ -189,7 +187,7 @@
         <tr>
           <td>
             <!-- {{ state.categoryCategoryId }} -->
-            {{ dropDown.catData }}
+            <!-- {{ backEnd.catData }} -->
             <!--  -->
           </td>
           <td>
@@ -352,7 +350,7 @@
   <hr class="border-4 border-red-600" />
   <div class="h-1/4 overflow-scroll md:overflow-scroll overflow-y-scroll">
     <div
-      class="flex sm:w-auto md:w-auto w-fit sm:flex m5-5 md:flex justify-center mb-8 md:justify-center sm:justify-center"
+      class="flex overflow-scroll sm:w-auto md:w-auto w-fit sm:flex m5-5 md:flex justify-center mb-8 md:justify-center sm:justify-center"
     >
       <table
         class="border-2 mt-5 sm:text-xs md:text-xs w-fit sm:w-fit md:w-auto p-2 text-center border-neutral-600"
@@ -396,7 +394,7 @@
               class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
             >
               <a
-                :href="'http://localhost:3006/book/' + book.book_image"
+                :href="'http://localhost:4000/book/' + book.book_image"
                 target="_blank"
                 >View Image</a
               >
@@ -491,40 +489,21 @@ let backendCategory = reactive({
 
 let backEnd = reactive({
   errorMsg: [],
-  //   catData: [],
-});
-let dropDown = reactive({
-  //   errorMsg: [],
   catData: [],
 });
-let book_ID = null;
 let errorMsg;
 let states = reactive({
   allBooks: [],
   editBook: [],
   bookDetails: [],
   category: [],
-  // tt: [],
 });
-let relation = reactive({
-  //   demo: {
-  id: book_ID,
-  book: null,
-  category: null,
-  //   },
-});
-let relation1 = {
-  // id: book_ID,
-  book: null,
-  category: null,
-};
-let id1;
 let dataCat1 = [];
 getBookData();
 
 // GET Category API
 async function getCategory() {
-  states.category = await $fetch("http://localhost:3006/category");
+  states.category = await $fetch("http://localhost:4000/category");
   //   console.log(states.bookDetails);
   console.log("category", states.category);
   catData = states.category;
@@ -543,7 +522,7 @@ getCategory();
 
 // GET API
 async function getBookData() {
-  states.allBooks = await $fetch("http://localhost:3006/book");
+  states.allBooks = await $fetch("http://localhost:4000/book");
   console.log("bookD", states.bookDetails);
   console.log("states -> ", states);
 
@@ -560,25 +539,18 @@ async function createBookData() {
   //   console.log("selected category", backendCategory.categoryData);
   console.log(" category", catData);
 
-  console.log("selected category ", dropDown.catData);
+  console.log("selected category ", backEnd.catData);
 
   if (result1) {
     if (isEdit != true) {
-      let response = await $fetch("http://localhost:3006/book", {
+      let response = await $fetch("http://localhost:4000/book", {
         method: "POST",
         body: state,
       })
         .then((res) => {
           console.log("res", res);
-          console.log("res ID- > ", res.book_id);
-
-          //   book_ID = state.book_id;
-          book_ID = res.book_id;
-          console.log("bookID-> ", book_ID);
-
-          alert("Book added successfully.");
-          relationTable();
           resetForm();
+          alert("Book added successfully.");
         })
         .catch((err) => {
           console.error("error", err.message, err.error);
@@ -602,7 +574,7 @@ async function createBookData() {
       };
 
       const responseEdit = await $fetch(
-        "http://localhost:3006/book/patch/" + id,
+        "http://localhost:4000/book/patch/" + id,
         {
           method: "PATCH",
           body: JSON.stringify(sampleBook),
@@ -630,54 +602,13 @@ async function createBookData() {
     return;
   }
 }
-
-// Third Table API
-// http://localhost:3006/book/bookcat
-
-async function relationTable() {
-  // http://localhost:3006/book/bookcat;
-  console.log("in relation id ", book_ID);
-
-  dropDown.catData.forEach((e) => {
-    relation1 = {
-      // id: book_ID,
-      book: book_ID,
-      category: e,
-    };
-    console.log("relation  ", relation1);
-
-    let response3 = $fetch("http://localhost:3006/book/bookcat", {
-      method: "POST",
-      body: relation1,
-    })
-      .then((res) => {
-        console.log("res", e + "--" + res);
-        console.log("response", response3);
-
-        //   console.log("res ID- > ", res.book_id);
-
-        //   book_ID = state.book_id;
-        console.log("bookID-> ", book_ID);
-      })
-      .catch((err) => {
-        console.error("error", err.message, err.error);
-        errorMsg = err.message;
-      });
-  });
-
-  // let result = await response.json();
-  //   let result = await response;
-  //   alert(result.message);
-  //   console.log("result", result);
-}
-
 // PATCH API
 async function editBookData(bookId: string) {
-  //   states.editBook = await $fetch("http://localhost:3006/book/" + bookId);
+  //   states.editBook = await $fetch("http://localhost:4000/book/" + bookId);
   id = bookId;
   // states.editBook
   // let specificBook = [];
-  let specificBook = await $fetch("http://localhost:3006/book/" + bookId);
+  let specificBook = await $fetch("http://localhost:4000/book/" + bookId);
 
   console.log("specific", specificBook);
   //   alert(specificBook.book_id);
@@ -702,7 +633,7 @@ async function editBookData(bookId: string) {
   //   console.log("edit", bookEdit);
   //   if (isEdit == true) {
   //     const response = await $fetch(
-  //       "http://localhost:3006/book/patch/" + bookId,
+  //       "http://localhost:4000/book/patch/" + bookId,
   //       {
   //         method: "PATCH",
   //         body: JSON.stringify(sampleBook),
@@ -716,7 +647,7 @@ async function editBookData(bookId: string) {
 }
 // Delete API
 async function deleteBookData(bookId: string) {
-  await $fetch("http://localhost:3006/book/" + bookId, {
+  await $fetch("http://localhost:4000/book/" + bookId, {
     method: "DELETE",
   });
 
