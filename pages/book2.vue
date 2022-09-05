@@ -193,7 +193,7 @@
             class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
           >
             <a
-              :href="'http://localhost:3006/book/' + book.book_image"
+              :href="'http://localhost:4000/book/' + book.book_image"
               target="_blank"
               >View Image</a
             >
@@ -246,7 +246,7 @@ getBookData();
 // }
 // GET API
 async function getBookData() {
-  states.allBooks = await $fetch('http://localhost:3006/book');
+  states.allBooks = await $fetch('http://localhost:4000/book');
   console.log(states.bookDetails);
   states.bookDetails = states.allBooks;
 }
@@ -255,7 +255,7 @@ getBookData();
 async function createBookData() {
   event.preventDefault();
   console.log(sampleBookData);
-  let response = await $fetch('http://localhost:3006/book', {
+  let response = await $fetch('http://localhost:4000/book', {
     method: 'POST',
     body: sampleBookData,
   });
@@ -268,10 +268,10 @@ async function createBookData() {
 }
 // PATCH API
 async function editBookData(bookId: string) {
-  //   states.editBook = await $fetch("http://localhost:3006/book/" + bookId);
+  //   states.editBook = await $fetch("http://localhost:4000/book/" + bookId);
   // states.editBook
   // let specificBook = [];
-  // let specificBook = await $fetch("http://localhost:3006/book/" + bookId);
+  // let specificBook = await $fetch("http://localhost:4000/book/" + bookId);
   // console.log("specific", specificBook);
   // alert(specificBook.book_id);
   //   let bookEdit =
@@ -298,7 +298,7 @@ async function editBookData(bookId: string) {
   });
   console.log('edit', bookEdit);
   console.log(bookEdit);
-  const response = await $fetch('http://localhost:3006/book/patch/' + bookId, {
+  const response = await $fetch('http://localhost:4000/book/patch/' + bookId, {
     method: 'PATCH',
     body: JSON.stringify(sampleBookData),
   });
@@ -306,7 +306,7 @@ async function editBookData(bookId: string) {
 }
 // Delete API
 async function deleteBookData(bookId: string) {
-  await $fetch('http://localhost:3006/book/' + bookId, {
+  await $fetch('http://localhost:4000/book/' + bookId, {
     method: 'DELETE',
   });
   getBookData();

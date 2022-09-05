@@ -342,11 +342,11 @@ getStdAPI();
 
 // GET API
 async function getStdAPI() {
-  State.allStud = await $fetch('http://localhost:3003/student/stddata');
+  State.allStud = await $fetch('http://localhost:4000/student/stddata');
 }
 // async function onFormSubmit() {
 //   alert('xvcv');
-//   await $fetch('http://localhost:3003/student/stdcreate', {
+//   await $fetch('http://localhost:4000/student/stdcreate', {
 //     method: 'POST',
 //     body: sampleData,
 //   });
@@ -373,7 +373,7 @@ async function onSubmit() {
   event.preventDefault();
 
   if (State.select === true) {
-    const response = await $fetch('http://localhost:3003/student/stdCreate/', {
+    const response = await $fetch('http://localhost:4000/student/stdCreate/', {
       method: 'POST',
       body: JSON.stringify(sampleData),
     });
@@ -400,7 +400,7 @@ async function onSubmit() {
 async function onClickOfEditStud(stdid: any) {
   State.Submit = 'Update';
   State.select = false;
-  const studEdit: any = await $fetch('http://localhost:3003/student/' + stdid);
+  const studEdit: any = await $fetch('http://localhost:4000/student/' + stdid);
   State.stdid = studEdit.stdid;
   console.log(State.stdid);
   sampleData.fname = studEdit.fname;
@@ -414,7 +414,7 @@ async function onClickOfEditStud(stdid: any) {
 async function putData() {
   const stdid = State.stdid;
   const response = await $fetch(
-    'http://localhost:3003/student/update/' + stdid,
+    'http://localhost:4000/student/update/' + stdid,
     {
       method: 'PATCH',
       body: sampleData,
@@ -425,7 +425,7 @@ async function putData() {
 }
 // Delete API
 async function onDeleteOfStud(stdid: any) {
-  await $fetch('http://localhost:3003/student/' + stdid, {
+  await $fetch('http://localhost:4000/student/' + stdid, {
     method: 'DELETE',
   });
   isEdit = false;
@@ -485,7 +485,7 @@ async function resetForm() {
 }
 
 // const { error: backError, data: posts } = await useFetch(
-//   'http://localhost:3003/student',
+//   'http://localhost:4000/student',
 //   { method: 'POST', body: JSON.stringify(sampleData) },
 // );
 // State.errorBack = backError;

@@ -209,7 +209,7 @@
             class="bg-blue-600 hover:bg-blue-800 px-2 p-1 rounded-xl text-white"
           >
             <a
-              :href="'http://localhost:3006/book/' + book.book_image"
+              :href="'http://localhost:4000/book/' + book.book_image"
               target="_blank"
               >View Image</a
             >
@@ -291,7 +291,7 @@ export default {
   methods: {
     // get all Book data API
     async getdata() {
-      await fetch("http://localhost:3006/book")
+      await fetch("http://localhost:4000/book")
         .then((data) => {
           //   this.dataBook1 = data.json();
           //   this.bookInfo.push(data.json());
@@ -332,7 +332,7 @@ export default {
       if (this.isEdit === true) {
         // this.allUserData[this.indexEdit] = this.userData;
 
-        fetch("http://localhost:3006/book/patch/" + this.indexEdit, {
+        fetch("http://localhost:4000/book/patch/" + this.indexEdit, {
           method: "PATCH",
           body: JSON.stringify({
             book_id: this.book_id,
@@ -353,7 +353,7 @@ export default {
         this.indexEdit = -1;
       } else {
         // alert("unable to update");
-        fetch("http://localhost:3006/book", {
+        fetch("http://localhost:4000/book", {
           method: "POST",
           body: JSON.stringify({
             book_id: this.book_id,
@@ -415,7 +415,7 @@ export default {
     async deleteBook(book_id) {
       // e.preventDefault();
       console.log("=============", book_id);
-      fetch("http://localhost:3006/book/" + book_id, {
+      fetch("http://localhost:4000/book/" + book_id, {
         method: "DELETE",
         // body: JSON.stringify({
         //   book_id: this.book_id,
@@ -442,7 +442,7 @@ export default {
     async imageBook(fileBookPath) {
       // e.preventDefault();
       console.log("book_Image-=============", fileBookPath);
-      fetch("http://localhost:3006/book/image", {
+      fetch("http://localhost:4000/book/image", {
         method: "POST",
         // body: JSON.stringify({
         //   book_id: this.book_id,
@@ -487,7 +487,7 @@ export default {
       const fd = new FormData();
       fd.append("image", this.fileBookPath, this.fileBookPath.name);
       axios
-        .post("http://localhost:3006/book/image", fd)
+        .post("http://localhost:4000/book/image", fd)
         .then((res) => {
           console.log(res.data);
           this.imagePath = res.data;
@@ -509,7 +509,7 @@ export default {
     async showBookImage(book_image) {
       // event.preventDefault();
       console.log("book_Image -=============", book_image);
-      fetch("http://localhost:3006/book/" + book_image, {
+      fetch("http://localhost:4000/book/" + book_image, {
         // method: "GET",
 
         headers: {
@@ -517,7 +517,7 @@ export default {
         },
       }).then((res) => {
         console.log(res.json());
-        this.imagePath = "http://localhost:3006/book/" + book_image;
+        this.imagePath = "http://localhost:4000/book/" + book_image;
         // this.imagePath = res.json;
         res.json();
         alert("paste this link in your browser ->  " + this.imagePath);
@@ -587,5 +587,5 @@ export default {
   },
 };
 
-// http://localhost:3006/book/
+// http://localhost:4000/book/
 </script>

@@ -243,7 +243,7 @@ let sampleData = {
 getStudentAPI();
 // GET API
 async function getStudentAPI() {
-  data.allStud = await $fetch('http://localhost:3001/student-managment/');
+  data.allStud = await $fetch('http://localhost:4000/student-managment/');
 }
 // POST API
 async function onFormSubmit() {
@@ -263,7 +263,7 @@ async function onFormSubmit() {
   //   method: "POST",
   //   body: JSON.stringify(mydata.product),
   // };
-  await $fetch('http://localhost:3001/student-managment/', {
+  await $fetch('http://localhost:4000/student-managment/', {
     method: 'POST',
     body: sampleData,
   });
@@ -286,7 +286,7 @@ async function onClickOfEditStud(id) {
   console.log(studEdit);
   //   sampleBookData.book_id = bookEdit.book_id;
   const response = await $fetch(
-    'http://localhost:3001/student-managment/' + id,
+    'http://localhost:4000/student-managment/' + id,
     {
       method: 'PATCH',
       body: sampleData,
@@ -297,7 +297,7 @@ async function onClickOfEditStud(id) {
 // Delete API
 async function onDeleteOfStudent(id) {
   alert('you want to delete the record...?');
-  await $fetch('http://localhost:3001/student-managment/' + id, {
+  await $fetch('http://localhost:4000/student-managment/' + id, {
     method: 'DELETE',
   });
   getStudentAPI();
